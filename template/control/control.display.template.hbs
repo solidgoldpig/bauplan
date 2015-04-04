@@ -1,0 +1,24 @@
+{{!--
+/**
+ * @template control%display
+ * @language handlebars
+ * @block template
+ * @param {string} label Label text to display
+ * @param {string} [yield] Non-escaped yielded content
+ * @param {string} [value] Non-escaped value to display for control if nothing yielded
+ * @description Outputs control wrapper and either outputs explicit value or yields to specificied control template
+ * 
+ *     {{#template "control.display" label="Foo label"}}
+ *         ...
+ *     {{/template}}
+ *
+ * NB. It is usually preferable to use {@link template:control%view} rather than calling this directly
+ *
+ * @see template:control%view
+ * @see template:control
+ * @see template:control%edit
+ * 
+ */
+--}}
+<h3>{{{label}}}</h3>
+<div class="display">{{#if yield "==" false}}{{{value}}}{{else}}{{{yield}}}{{/if}}</div>

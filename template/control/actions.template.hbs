@@ -1,0 +1,26 @@
+{{!--
+/**
+ * @template actions
+ * @language handlebars
+ * @block template
+ * @param {string} [actions-class] Additional class to use for actions block
+ * @param {string} [action] Text to use for primary action control (can be a I18N key)
+ * @param {string} [action-class] Class to use for primary action control
+ * @param {string|boolean} [cancel] (Text to use for cancel control (can be a I18N key). If true, set to default.back)
+ * @param {string} [cancel-class] Additional class to use for cancel control
+ * @description Outputs action controls and any associated errors
+ * 
+ *     {{template "actions" action="view.foo.action.submit"}}
+ *     
+ *     {{template "actions" action="Save card" cancel=true}}
+ */
+--}}
+{{#if cancel "===" true}}{{set "cancel" "default.back"}}{{/if}}
+
+{{#if error}}<p class="view-error">{{error}}</p>{{/if}}
+<ul class="actions{{#if actions-class}} {{actions-class}}{{/if}}">
+    <li class="action-submit{{#if action-class}} {{action-class}}{{/if}}"><input name="action-submit" type="submit" value="{{phrase action}}"></li>
+    {{#if cancel}}
+    <li class="action-cancel{{#if cancel-class}} {{cancel-class}}{{/if}}"><input name="action-cancel" type="submit" value="{{phrase cancel}}"></li>
+    {{/if}}
+</ul>

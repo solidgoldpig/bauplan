@@ -1,0 +1,253 @@
+/**
+ * @stylesheet mixins%bauplan%less
+ * @language less
+ * @description Mixin functions
+ * @nopreparse
+ */
+
+/**
+ * @function .box-sizing
+ * @description Browser-prefixed box-sizing
+ */
+.box-sizing() {
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/**
+ * @function .border-radius
+ * @description Browser-prefixed border-radius
+ * @param {unit} @radius Border radius size (px|em|rem)
+ */
+.border-radius(@radius) {
+    -ms-border-radius: @radius;
+    -moz-border-radius: @radius;
+    -o-border-radius: @radius;
+    -webkit-border-radius: @radius;
+    border-radius: @radius;
+}
+
+// Would be nice to use multiple shadow solution from http://toekneestuck.com/blog/2012/05/15/less-css-arguments-variable/
+// instead declare multiples as a variable and pass, eg.
+//    @shadow: 0 1px 3px #eee, 0 5px 10px #f5f5f5;
+//    .box-shadow(@shadow);
+/**
+ * @function .box-shadow
+ * @description Browser-prefixed box-shadow
+ * @param {shadow-properties} @shadow Shadow properties
+ */
+.box-shadow(@shadow) {
+    -ms-box-shadow: @shadow;
+    -moz-box-shadow: @shadow;
+    -o-box-shadow: @shadow;
+    -webkit-box-shadow: @shadow;
+    box-shadow: @shadow;
+}
+
+/**
+ * @function .opacity
+ * @description Cross-browser opacity
+ * @param {number} @op Opacity value between 0 and 1
+ */
+.opacity(@op) {
+    opacity: @op;
+    @filterop: (@op * 100);
+    filter: alpha(opacity=@filterop);
+}
+
+/**
+ * @function .placeholder
+ * @description Cross-browser placeholder colour
+ * @param {color} @color Placeholder text color
+ */
+.placeholder(@color) {
+    &:-moz-placeholder {
+        color: @color;
+    }
+    &:-ms-input-placeholder {
+        color: @color;
+    }
+    &::-webkit-input-placeholder {
+        color: @color;
+    }
+}
+
+/**
+ * @function .vertical-align
+ * @description Cross-browser vertical alignment
+ * @param {unit} [@percent=50%] Vertical alignment offset
+ * @param {string} [@position=absolute] Position type to use
+ */
+.vertical-align(@percent: 50%, @position: absolute) {
+  position: @position;
+  display: block;
+  top: @percent;
+  -webkit-transform: translateY(-@percent);
+  -ms-transform: translateY(-@percent);
+  transform: translateY(-@percent);
+}
+
+/**
+ * @function .accessibilityHide
+ * @description Visually hide text present for accessibilty purposes
+ */
+.accessibilityHide() {
+    position: absolute;
+    left: -9999px;
+}
+
+/**
+ * @function .hoverUnderline
+ * @description Only display link underline on :hover
+ */
+.hoverUnderline() {
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+/**
+ * @function .siteDivider
+ * @description Add visual division between site sections
+ */
+.siteDivider(@siteDividerHeight: 0.5em) {
+    border-bottom: solid @siteDividerHeight @mediumGrey;
+}
+
+/**
+ * @function .currencySymbol
+ * @description Prepend amount with £ symbol
+ */
+.currencySymbol() {
+    &:before {
+        //.siteDisplay();
+        content: "£";
+        font-size: 0.75em;
+        position: relative;
+        top: -0.3125em;
+        padding-right: 0.125em;
+    }
+}
+
+//animate-me
+@lesscompiler: 'js';
+/**
+ * @function .animator
+ * @description Cross-browser keyframe animation rule properties
+ * @param {string} @n Id of animation
+ * @param {string|boolean} @p Duration of animation
+ * @param {string|boolean} @s Target class for animation
+ * @param {unit} [@1p] Keyframe
+ * @param {string} [@1r] Animation properties
+ * @param {...unit} [@np] Additional keyframes
+ * @param {...string} [@nr] Additional animation properties
+ * @example .animator(ANIMATIONID; 10s infinite; ".targetclass";
+ *   0%; "left: 15%";
+ *   50%; "left: 100%";
+ *   100%; "left: 15%";
+ * );
+ * @example .animator(ANOTHERANMID; false; false;
+ *    0%; "opacity: 0";
+ *    100%; "opacity: 1";
+ * );
+ */
+.animator(@n; @p: false; @s: false; @1p: false; @1r: 'x'; @2p: false; @2r: 'x'; @3p: false; @3r: 'x'; @4p: false; @4r: 'x'; @5p: false; @5r: 'x'; @6p: false; @6r: 'x'; @7p: false; @7r: 'x'; @8p: false; @8r: 'x'; @9p: false; @9r: 'x'; @10p: false; @10r: 'x'; @11p: false; @11r: 'x')
+        when (@lesscompiler='js') {
+        .keyframe(@x; @1i; @v) {
+                @sp: ~" ";
+          @z: "`'\n'`";
+          @as: ~"} @{s}";
+    @keyframe: ~"@{x}@{z}@@{v}keyframes @{n} {@{z}";
+
+    .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and (iskeyword(@2p)) and (iskeyword(@3p)) and (iskeyword(@4p)) and (iskeyword(@5p)) and (iskeyword(@6p)) and (iskeyword(@7p)) and (iskeyword(@8p)) and (iskeyword(@9p)) and (iskeyword(@10p)) and (iskeyword(@11p)) { @{keyframe} { .kd('l'; @1r; @1p); } }
+                .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and not (iskeyword(@2p)) and (iskeyword(@3p)) and (iskeyword(@4p)) and (iskeyword(@5p)) and (iskeyword(@6p)) and (iskeyword(@7p)) and (iskeyword(@8p)) and (iskeyword(@9p)) and (iskeyword(@10p)) and (iskeyword(@11p)) { @{keyframe} { .kd(''; @1r; @1p); } @{sp} { .kd('l'; @2r; @2p); } }
+                .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and not (iskeyword(@2p)) and not (iskeyword(@3p)) and (iskeyword(@4p)) and (iskeyword(@5p)) and (iskeyword(@6p)) and (iskeyword(@7p)) and (iskeyword(@8p)) and (iskeyword(@9p)) and (iskeyword(@10p)) and (iskeyword(@11p)) { @{keyframe} { .kd(''; @1r; @1p); } @{sp} { .kd(''; @2r; @2p); } @{sp} { .kd('l'; @3r; @3p); } }
+                .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and not (iskeyword(@2p)) and not (iskeyword(@3p))  and not (iskeyword(@4p)) and (iskeyword(@5p)) and (iskeyword(@6p)) and (iskeyword(@7p)) and (iskeyword(@8p)) and (iskeyword(@9p)) and (iskeyword(@10p)) and (iskeyword(@11p)) { @{keyframe} { .kd(''; @1r; @1p); } @{sp} { .kd(''; @2r; @2p); } @{sp} { .kd(''; @3r; @3p); } @{sp} { .kd('l'; @4r; @4p); } }
+                .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and not (iskeyword(@2p)) and not (iskeyword(@3p))  and not (iskeyword(@4p)) and not (iskeyword(@5p)) and (iskeyword(@6p)) and (iskeyword(@7p)) and (iskeyword(@8p)) and (iskeyword(@9p)) and (iskeyword(@10p)) and (iskeyword(@11p)) { @{keyframe} { .kd(''; @1r; @1p); } @{sp} { .kd(''; @2r; @2p); } @{sp} { .kd(''; @3r; @3p); } @{sp} { .kd(''; @4r; @4p); } @{sp} { .kd('l'; @5r; @5p); } }
+                .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and not (iskeyword(@2p)) and not (iskeyword(@3p))  and not (iskeyword(@4p)) and not (iskeyword(@5p)) and not (iskeyword(@6p)) and (iskeyword(@7p)) and (iskeyword(@8p)) and (iskeyword(@9p)) and (iskeyword(@10p)) and (iskeyword(@11p)) { @{keyframe} { .kd(''; @1r; @1p); } @{sp} { .kd(''; @2r; @2p); } @{sp} { .kd(''; @3r; @3p); } @{sp} { .kd(''; @4r; @4p); } @{sp} { .kd(''; @5r; @5p); } @{sp} { .kd('l'; @6r; @6p); } }
+                .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and not (iskeyword(@2p)) and not (iskeyword(@3p))  and not (iskeyword(@4p)) and not (iskeyword(@5p)) and not (iskeyword(@6p)) and not (iskeyword(@7p)) and (iskeyword(@8p)) and (iskeyword(@9p)) and (iskeyword(@10p)) and (iskeyword(@11p)) { @{keyframe} { .kd(''; @1r; @1p); } @{sp} { .kd(''; @2r; @2p); } @{sp} { .kd(''; @3r; @3p); } @{sp} { .kd(''; @4r; @4p); } @{sp} { .kd(''; @5r; @5p); } @{sp} { .kd(''; @6r; @6p); } @{sp} { .kd('l'; @7r; @7p); } }
+                .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and not (iskeyword(@2p)) and not (iskeyword(@3p))  and not (iskeyword(@4p)) and not (iskeyword(@5p)) and not (iskeyword(@6p)) and not (iskeyword(@7p)) and not (iskeyword(@8p)) and (iskeyword(@9p)) and (iskeyword(@10p)) and (iskeyword(@11p)) { @{keyframe} { .kd(''; @1r; @1p); } @{sp} { .kd(''; @2r; @2p); } @{sp} { .kd(''; @3r; @3p); } @{sp} { .kd(''; @4r; @4p); } @{sp} { .kd(''; @5r; @5p); } @{sp} { .kd(''; @6r; @6p); } @{sp} { .kd(''; @7r; @7p); } @{sp} { .kd('l'; @8r; @8p); } }
+                .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and not (iskeyword(@2p)) and not (iskeyword(@3p))  and not (iskeyword(@4p)) and not (iskeyword(@5p)) and not (iskeyword(@6p)) and not (iskeyword(@7p)) and not (iskeyword(@8p)) and not (iskeyword(@9p)) and (iskeyword(@10p)) and (iskeyword(@11p)) { @{keyframe} { .kd(''; @1r; @1p); } @{sp} { .kd(''; @2r; @2p); } @{sp} { .kd(''; @3r; @3p); } @{sp} { .kd(''; @4r; @4p); } @{sp} { .kd(''; @5r; @5p); } @{sp} { .kd(''; @6r; @6p); } @{sp} { .kd(''; @7r; @7p); } @{sp} { .kd(''; @8r; @8p); } @{sp} { .kd('l'; @9r; @9p); } }
+                .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and not (iskeyword(@2p)) and not (iskeyword(@3p))  and not (iskeyword(@4p)) and not (iskeyword(@5p)) and not (iskeyword(@6p)) and not (iskeyword(@7p)) and not (iskeyword(@8p)) and not (iskeyword(@9p)) and not (iskeyword(@10p)) and (iskeyword(@11p)) { @{keyframe} { .kd(''; @1r; @1p); } @{sp} { .kd(''; @2r; @2p); } @{sp} { .kd(''; @3r; @3p); } @{sp} { .kd(''; @4r; @4p); } @{sp} { .kd(''; @5r; @5p); } @{sp} { .kd(''; @6r; @6p); } @{sp} { .kd(''; @7r; @7p); } @{sp} { .kd(''; @8r; @8p); } @{sp} { .kd(''; @9r; @9p); } @{sp} { .kd('l'; @10r; @10p); } }
+                .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p) when not (iskeyword(@1p)) and not (iskeyword(@2p)) and not (iskeyword(@3p))  and not (iskeyword(@4p)) and not (iskeyword(@5p)) and not (iskeyword(@6p)) and not (iskeyword(@7p)) and not (iskeyword(@8p)) and not (iskeyword(@9p)) and not (iskeyword(@10p)) and not (iskeyword(@11p)) { @{keyframe} { .kd(''; @1r; @1p); } @{sp} { .kd(''; @2r; @2p); } @{sp} { .kd(''; @3r; @3p); } @{sp} { .kd(''; @4r; @4p); } @{sp} { .kd(''; @5r; @5p); } @{sp} { .kd(''; @6r; @6p); } @{sp} { .kd(''; @7r; @7p); } @{sp} { .kd(''; @8r; @8p); } @{sp} { .kd(''; @9r; @9p); } @{sp} { .kd(''; @10r; @10p); } @{sp} { .kd('l'; @11r; @11p); } }
+
+    .kd(@1id; @ru; @pcn) when not (iskeyword(@s)) {@pr: %(@ru, @v); @rij: ~"@{pr};"; @ij: ~"@{pcn} {@{z}    @{rij} /*"; @{ij} { /**/ } }
+    .kd(@1id; @ru; @pcn) when not (@1i='l') and not (@1id='l') and (iskeyword(@s)) {@pr: %(@ru, @v); @rij: ~"@{pr};"; @ij: ~"@{pcn} {@{z}    @{rij} /*"; @{ij} { /**/ } }
+    .kd(@1id; @ru; @pcn) when not (@1i='l') and (@1id='l') and (iskeyword(@s)) {@pr: %(@ru, @v); @rij: ~"@{pr};"; @ij: ~"@{pcn} {@{z}    @{rij} /*"; @{ij} { /**/ } }
+    .kd(@1id; @ru; @pcn) when (@1i='l') and not (@1id='l') and (iskeyword(@s)) {@pr: %(@ru, @v); @rij: ~"@{pr};"; @ij: ~"@{pcn} {@{z}    @{rij} /*"; @{ij} { /**/ } }
+    .kd(@1id; @ru; @pcn) when (@1i='l') and (@1id='l') and (iskeyword(@s)) {@pr: %(@ru, @v); @rij: ~"@{pr};"; @ij: ~"@{pcn} {@{z}    @{rij}@{z} } /*"; @{ij} { /**/ } }
+
+    .ks(@1p; @2p; @3p; @4p; @5p; @6p; @7p; @8p; @9p; @10p; @11p);
+
+    .as() {}
+    .as() when (@1i='l') and not (iskeyword(@s)) and (iskeyword(@p)) {
+      @{as} {
+        -moz-animation: @n;
+        -webkit-animation: @n;
+        -o-animation: @n;
+        animation: @n;
+      }
+    }
+    .as() when (@1i='l') and not (iskeyword(@s)) and not (iskeyword(@p)) {
+      @{as} {
+        -moz-animation: @n @p;
+        -webkit-animation: @n @p;
+        -o-animation: @n @p;
+        animation: @n @p;
+      }
+    }
+    .as;
+  }
+
+  .keyframe(''   , 'f',  '-moz-');
+  .keyframe(~'} ', 0, '-webkit-');
+  .keyframe(~'} ', 0,      '-o-');
+  .keyframe(~'} ', 'l',       '');
+}
+
+/**
+ * @function .animation
+ * @description Cross-browser animation rule property
+ * @param {animation} [@animationProperties] Animation properties
+ */
+.animation(@animationProperties) {
+    -moz-animation: @animationProperties;
+    -webkit-animation: @animationProperties;
+    -o-animation: @animationProperties;
+    animation: @animationProperties;
+}
+
+/**
+ * @function .transition
+ * @description Cross-browser transition rule property
+ * @param {transition} [@transprops] Transition properties
+ */
+.transition(@transprops) {
+    -webkit-transition: @transprops;
+    -moz-transition: @transprops;
+    -o-transition: @transprops;
+    -ms-transition: @transprops;
+    transition: @transprops;
+}
+
+//phrase:hover:before {
+//    .siteDisplay();
+//    font-size: 14px !important;
+//    content: attr(data-phrase-key);
+//    text-transform: none !important;
+//    position: absolute;
+//    border: solid 1px #000000;
+//    background: #ffffff !important;
+//    color: #000000 !important;
+//    padding: 6px;
+//    z-index: 20000;
+//}
+
+//body {
+//    .animation(LORKS 10s);
+//}
+

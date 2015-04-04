@@ -1,0 +1,29 @@
+{{!--
+/**
+ * @template control%edit
+ * @language handlebars
+ * @block template
+ * @param {string} controlid Id for control
+ * @param {string} label Text for control’s label
+ * @param {boolean} [required] Whether control is required or optional
+ * @param {string} [note] Additional notes to show for control
+ * @param {object} [messages] Any notifications (errors/warnings/info) to show for control
+ * @description Outputs control wrapper and either outputs explicit value or yields to specificied control template
+ * 
+ *     {{#template "control.edit" controlid="foo" label="Foo label"}}
+ *         ...
+ *     {{/template}}
+ *
+ * NB. It is usually preferable to use {@link template:control%view} rather than calling this directly
+ *
+ * @see template:control%view
+ * @see template:control
+ * @see template:control%display
+ * 
+ */
+--}}<label for="{{controlid}}">{{{label}}} <small>{{#if required}}{{phrase "control.label.required"}}{{else}}{{phrase "control.label.optional"}}{{/if}}</small></label>
+<div class="edit">
+{{{yield}}}
+</div>
+{{#if note}}<p class="note">{{{note}}}</p>{{/if}}
+{{view "error" model=messages}}

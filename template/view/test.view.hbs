@@ -1,0 +1,47 @@
+{{!--
+/**
+ * @template test%view
+ * @language handlebars
+ * @block view
+ * @ignore
+ * @description Deprecated
+ * @deprecated
+ */
+--}}
+{{!--
+Hello testy
+{{model}} - {{this.model}} - {{console this}} - {{console model}} - {{console this.model}} {{console model.foo}}
+{{template "text.control" name="uh" value="ough"}}
+--}}
+
+{{#if 0}}
+WOOT!
+{{control "nom" control-type="select" required=true}}
+{{else}}
+
+
+edit:{{edit}}; display:{{display}}
+{{control "nom" control-type="select" required=true}}
+{{control "boff"}}
+{{control "biff"}}
+{{control "foo"}}
+{{! !!!!control "bar" label="Tehwiz" control-keyup=true required=true control-type="textarea" el-value="Nelly"}}
+{{control "bar"}}
+{{control "de" control-type="payment-date-expiry"}}
+{{control "wong" control-type="checkbox"}}
+{{control "dong" control-type="checkbox"}}
+{{control "zong" control-type="checkbox"}}
+{{control "nameoncard"}}
+{{control "cashola"}}
+{{control "expirydate" control-type="payment-date-expiry"}}
+<div class="payment-additional-fields">
+{{control "startdate" control-type="payment-date-start"}}
+{{control "issuenumber"}}
+</div>
+{{control "ccv" placeholder="***"}}
+{{control "wiz" display=true}}
+{{/if}}
+
+{{actions}}
+
+<input name="action-submit" type="submit" value="Do tha funk">

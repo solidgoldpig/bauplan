@@ -1,0 +1,29 @@
+{{!--
+/**
+ * @template control
+ * @language handlebars
+ * @block template
+ * @param {string} controltype Type of control
+ * @param {boolean} [edit] Whether control is in edit or display mode
+ * @param {boolean} [required] Whether the control is required or optional
+ * @param {object} [attributes] Attributes to be passed on to control template
+ * @description Outputs control wrapper and yields to {@link template:control%edit} or {@link template:control%display} template
+ * 
+ *     {{#template "control" control-type="text" edit=true}}
+ *         ...
+ *     {{/#template}}
+ *
+ * NB. It is usually preferable to use {@link template:control%view} rather than calling this directly
+ *
+ * @see template:control%view
+ * @see template:control%edit
+ * @see template:control%display
+ */
+--}}
+<div class="{{controltype}}-control{{#if edit}} {{#if required}}required{{else}}optional{{/if}}{{/if}}">
+{{#if edit}}
+{{template "control.edit"}}
+{{else}}
+{{template "control.display"}}
+{{/if}}
+</div>

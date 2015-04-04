@@ -1,0 +1,22 @@
+{{!--
+/**
+ * @template payment-date-expiry%edit
+ * @language handlebars
+ * @block control
+ * @param {object} month Attributes to pass to el-select for month
+ * @param {object} year Attributes to pass to el-select for year
+ * @description Template used by payment expiry date control in edit mode
+ * 
+ *     {{{template "payment-date-expiry.edit" month=month year=year}}}
+ *
+ * NB. It is usually preferable to use {@link template:control%view} rather than calling this directly
+ *
+ * @see template:control%view
+ * @see template:control
+ * @see template:control%edit
+ * @see template:select%edit
+ * @see template:payment-date-start%edit
+ */
+--}}
+{{{el-select class="expiry-month" attributes=month}}}
+{{{el-select class="expiry-year" attributes=year}}}

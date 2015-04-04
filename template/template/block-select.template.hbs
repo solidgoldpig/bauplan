@@ -1,0 +1,31 @@
+{{!--
+/**
+ * @template selectblock
+ * @language handlebars
+ * @block template
+ * @param {string} [heading] Block heading text - can be passed as a i18n key
+ * @param {string} [class] Additional class names for block
+ * @param {boolean} [close] Whether to output 
+ * @param {string} [addroute] Route for adding an additional item to select from
+ * @description Wraps grouped selection choices and other elements within a block structure
+ * 
+ *     {{{template "selectblock" heading="Foo"}}}
+ *        ...
+ *     {{{template "selectblock" close="true"}}}
+ *
+ * Open and close blocks are used rather than {{{#template "selectblock"}}}{{{yield}}}{{{/template}}} to preserve the current context
+ */
+--}}
+{{^if close}}
+<div class="block block-select{{#if class}} {{class}}{{/if}}">
+{{#if heading}}
+<h2>{{phrase heading}}</h2>
+{{/if}}
+<div class="block-content">
+{{else}}
+</div>
+{{#if addroute}}
+<p class="add"><a href="{{routeurl addroute}}" class="{{addroute}}">{{phrase "template.block-select.add" _append=addroute}}</a></p>
+{{/if}}
+</div>
+{{/if}}

@@ -1,0 +1,27 @@
+{{!--
+/**
+ * @template editblock
+ * @language handlebars
+ * @block template
+ * @param {string} [heading] Block heading text - can be passed as a i18n key
+ * @param {string} [class] Additional class names for block
+ * @param {boolean} [close] Whether to output 
+ * @description Wraps grouped controls and other elements within a block structure
+ * 
+ *     {{{template "editblock" heading="Foo"}}}
+ *        ...
+ *     {{{template "editblock" close="true"}}}
+ *
+ * Open and close blocks are used rather than {{{#template "editblock"}}}{{{yield}}}{{{/template}}} to preserve the current context
+ */
+--}}
+{{^if close}}
+<div class="block block-edit{{#if class}} {{class}}{{/if}}">
+{{#if heading}}
+<h2>{{phrase heading}}</h2>
+{{/if}}
+<div class="block-content">
+{{else}}
+</div>
+</div>
+{{/if}}

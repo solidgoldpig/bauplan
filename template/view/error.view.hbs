@@ -1,0 +1,24 @@
+{{!--
+/**
+ * @template error%view
+ * @language handlebars
+ * @block view
+ * @param {array} [error] List of errors to display
+ * @param {array} [warning] List of warnings to display
+ * @param {array} [info] List of info messages to display
+ * @description Displays any notifications (errors, warnings or info messages)
+ *
+ *     {{{view "error" error=error}}}
+ *
+* NB. It is usually preferable to use {@link template:control%view} rather than calling this directly
+ */
+--}}
+{{#if error}}
+<ul class="control-errors">{{#each error}}<li>{{{this}}}</li>{{/each}}</ul>
+{{/if}}
+{{#if warning}}
+<ul class="control-warnings">{{#each warning}}<li>{{{this}}}</li>{{/each}}</ul>
+{{/if}}
+{{#if info}}
+<ul class="control-infos">{{#each info}}<li>{{{this}}}</li>{{/each}}</ul>
+{{/if}}

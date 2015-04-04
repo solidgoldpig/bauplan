@@ -1,0 +1,122 @@
+{{!--
+/**
+ * @template control%view
+ * @language handlebars
+ * @block view
+ * @param {string} controltemplate Name of control template
+ * @param {object} [attributes] Attributes to be passed on to specific control template
+ * @description
+ *
+ * Output a control named foo
+ *
+ *     {{control "foo"}}
+ *
+ * Any valid changes to the control input’s value are propagated to the controlmodel.
+ *
+ * Any validation errors are automatically displayed.
+ *
+ * By default, the control uses the containing view's model for its value its schema from which is determines which settings apply, using the control’s name as the model/schema property.
+ * 
+ * All settings can be overridden by passing the corresponding attribute explicitly in the control helper.
+ *
+ * Output a control in display mode
+ * 
+ *     {{control "foo" display=true}}
+ *     {{control "foo" edit=false}}
+ *
+ * Pass a value explicitly
+ *
+ *     {{control "foo" value=bar}}
+ *
+ * Make the control’s value required
+ * 
+ *     {{control "foo" required=true}}
+ *
+ * Denote that the control can accept multiline input
+ * 
+ *     {{control "foo" multiline=true}}
+ *
+ * Set the control’s phrasekey
+ * 
+ *     {{control "foo" phrasekey="fookey"}}
+ *
+ * Set the control’s label
+ * 
+ *     {{control "foo" label="Foo bar"}}
+ *     {{control "foo" label="foo.label"}} <- passing a phrasekey
+ *
+ * Set the control’s note
+ * 
+ *     {{control "foo" note="Foo is often followed by bar"}}
+ *     {{control "foo" note="foo.note"}} <- passing a phrasekey
+ *
+ * See {@link module:bauplan%control%view~initialize} for more details on the phrasekey and how labels and notes are looked up
+ *
+ * Setting the control-type explicitly
+ * 
+ *     {{control "foo" control-type="payment-date-expiry"}}
+ *     {{control "foo" control-type="checkbox"}}
+ *     {{control "foo" control-type="select" options=optionsfoo}}
+ *     {{control "foo" control-type="password"}}
+ *
+ * Setting the primitive explicitly
+ * 
+ *     {{control "foo" control-primitive="number" }}
+ *
+ * Setting the format explicitly
+ * 
+ *     {{control "foo" control-format="email"}}
+ *
+ * Any other attributes are passed to the control’s input
+ *  
+ *     {{control "foo" attributes=attributes data-bar="baz"}}
+ * 
+ *
+ * #### Pre-compilation
+ *
+ * The control helper is automatically converted into the correspnding view helper when the templates are loaded
+ *
+ * The view template calls the specific control template wrapped in the {@link template:control} template
+ *
+ * eg.
+ * 
+ *     {{control "foo"}} -> {{view "control" control-name="foo"}}
+ *
+ * #### Basic flow
+ * 
+ *     ~{@link template:control}
+ *         if edit
+ *             ~{@link template:control%edit}
+ *                  label
+ *                  ~{{controltemplate}}.edit
+ *                  note
+ *                  notifications (errors etc)
+ *         else
+ *             ~{@link template:control%display}
+ *                  heading
+ *                  ~{{controltemplate}}.display
+ *
+ * If there is no such template for {{controltemplate}}.{{mode}}, then the text template for the corresponding mode is used
+ *
+ * @see module:bauplan%control%view
+ * @see template:control
+ * @see template:control%edit
+ * @see template:control%display
+ * @see template:text%edit
+ * @see template:text%display
+ * @see template:textarea%edit
+ * @see template:checkbox%edit
+ * @see template:select%edit
+ * @see template:file%edit
+ * @see template:hidden%edit
+ * @see template:password%edit
+ * @see template:password-new%edit
+ * @see template:password%block
+ * @see template:date%edit
+ * @see template:payment-date-start%edit
+ * @see template:payment-date-expiry%edit
+ */
+--}}
+{{#template "control"}}
+{{template controltemplate attributes=attributes}}
+{{/template}}

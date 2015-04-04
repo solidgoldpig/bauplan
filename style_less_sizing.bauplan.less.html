@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: style/less/sizing.bauplan.less</title>
+
+    <script src="scripts/jquery-1.11.2.min.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title"><small>Source</small> style/less/sizing.bauplan.less</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @stylesheet sizing%bauplan%less
+ * @language less
+ * @description Sizing functions and properties
+ * @nopreparse
+ */
+
+/**
+ * @var {number} @sizingbasesize=16
+ * @description Base font size in pixels
+ * Used to calculate em / rem
+ */
+@sizingbasesize: 16;
+//@sizingwindow: ~`"".replace(/.*/, function(){ console.log(this, this.less); })`;
+// delete "-: ;"
+// delete " +\n"
+// delete "/* ... */"
+//...
+// box-shadow, background position, css animations(?)
+
+/**
+ * @function .px
+ * @description Outputs px value based on @sizingbasesize
+ * @param {number} size Rem unit
+ */
+.px(@size) {
+    @pxsize: (@size * @sizingbasesize);
+    @px: ~`"@{pxsize}px".replace(/\b0px/, "0")`;
+}
+
+/**
+ * @function .rem
+ * @description Outputs rem value
+ * @param {number} size Unit
+ */
+.rem(@size) {
+    @rem: ~`"@{size}rem".replace(/\b0rem/, "0")`;
+}
+
+/**
+ * @function .size
+ * @description Outputs rem value with em and px fallbacks for a particular property
+ * @param {string} type Property to be sized
+ * @param {string} units Value for property
+ */
+.size(@type, @rest...) {
+    //@debug: ~`"@{rest}".replace(/(.*)/g, function(){this.console.log("debug", "@{rest}"); this.console.log(this, this.less);})`;
+    @all: ~`"@{rest}".replace(/[\[\]]/g,"").replace(/(rgba*\([^\)]+\))/, function(m){return m.replace(/,/g, "SIZINGCOMMA");}).replace(/,\s*/g," ").replace(/SIZINGCOMMA/g, ",")`;
+    @emcontext: ~`"@{all}".replace(/(emcontext[- ](\d+(\.\d+)?\b))/, function(m, m1, m2) { this.SIZINGEMCONTEXT = m2; return "";})`;
+    @remvalue: ~`"@{emcontext}".replace(/(remvalue[- ](\d+(\.\d+)?\b))/, function(m, m1, m2) { this.SIZINGREMVALUE = m2; return "";})`;
+    @fontsizevalue: ~`"@{remvalue}".replace(/^\s*(\d+(\.\d+)?\b)\s*$/, function(m, m1) { if ("@{type}" === "font-size") { this.SIZINGREMVALUE = m1; } return m1;})`;
+    @parsed: ~`"@{fontsizevalue}".replace(/#(\d)/, "SIZINGHASH$1")`;
+    
+    @pxs: ~`"@{parsed}".replace(/\b(\d+(\.\d+)?)(rem)?(?![%,\)])\b/g, function(m, m1){ return m1 != "0" ? (m1 * @{sizingbasesize}) + "px" : "0"; }).replace(/SIZINGHASH/, "#")`;
+    @ems: ~`"@{parsed}".replace(/\b(\d+(\.\d+)?)(rem)?(?![%,\)])\b/g, function(m, m1){ var emcontext = this.SIZINGEMCONTEXT || 1; var remvalue = this.SIZINGREMVALUE || 1; var multiplier = "@{type}" === "font-size" ? 1/emcontext : 1/remvalue; return m1 != "0" ? (m1 * multiplier) + "em" : "0"; }).replace(/SIZINGHASH/, "#")`;
+    @rems: ~`"@{parsed}".replace(/\b(\d+(\.\d+)?)(?![%,\)])\b/g, function(m, m1){ return m1 != "0" ? m1 + "rem" : "0"; }).replace(/SIZINGHASH/, "#")`;
+    @sizingvarsreset: `"@{parsed}".replace(/.*/, function(){ delete this.SIZINGEMCONTEXT; delete this.SIZINGREMVALUE; return ""})`;
+    -:~";@{type}: @{pxs}";
+    -:~";@{type}: @{ems}";
+    -:~";@{type}: @{rems}";
+}
+
+/**
+ * @function .font-size
+ * @description Outputs remified font-size
+ * @param {string} args Units to pass through to .size
+ */
+.font-size(...) {
+    .size(font-size, @arguments);
+}
+/**
+ * @function .width
+ * @description Outputs remified width
+ * @param {string} args Units to pass through to .size
+ */
+.width(...) {
+    .size(width, @arguments);
+}
+/**
+ * @function .min-width
+ * @description Outputs remified min-width
+ * @param {string} args Units to pass through to .size
+ */
+.min-width(...) {
+    .size(min-width, @arguments);
+}
+/**
+ * @function .max-width
+ * @description Outputs remified max-width
+ * @param {string} args Units to pass through to .size
+ */
+.max-width(...) {
+    .size(max-width, @arguments);
+}
+/**
+ * @function .height
+ * @description Outputs remified height
+ * @param {string} args Units to pass through to .size
+ */
+.height(...) {
+    .size(height, @arguments);
+}
+/**
+ * @function .min-height
+ * @description Outputs remified min-height
+ * @param {string} args Units to pass through to .size
+ */
+.min-height(...) {
+    .size(min-height, @arguments);
+}
+/**
+ * @function .max-height
+ * @description Outputs remified max-height
+ * @param {string} args Units to pass through to .size
+ */
+.max-height(...) {
+    .size(max-height, @arguments);
+}
+/**
+ * @function .margin
+ * @description Outputs remified margin
+ * @param {string} args Units to pass through to .size
+ */
+.margin(...) {
+    .size(margin, @arguments);
+}
+/**
+ * @function .margin-top
+ * @description Outputs remified margin-top
+ * @param {string} args Units to pass through to .size
+ */
+.margin-top(...) {
+   .size(margin-top, @arguments); 
+}
+/**
+ * @function .margin-right
+ * @description Outputs remified margin-right
+ * @param {string} args Units to pass through to .size
+ */
+.margin-right(...) {
+   .size(margin-right, @arguments); 
+}
+/**
+ * @function .margin-bottom
+ * @description Outputs remified margin-bottom
+ * @param {string} args Units to pass through to .size
+ */
+.margin-bottom(...) {
+   .size(margin-bottom, @arguments); 
+}
+/**
+ * @function .margin-left
+ * @description Outputs remified margin-left
+ * @param {string} args Units to pass through to .size
+ */
+.margin-left(...) {
+   .size(margin-left, @arguments); 
+}
+
+/**
+ * @function .padding
+ * @description Outputs remified padding
+ * @param {string} args Units to pass through to .size
+ */
+.padding(...) {
+    .size(padding, @arguments);
+}
+/**
+ * @function .padding-top
+ * @description Outputs remified padding-top
+ * @param {string} args Units to pass through to .size
+ */
+.padding-top(...) {
+   .size(padding-top, @arguments); 
+}
+/**
+ * @function .padding-right
+ * @description Outputs remified padding-right
+ * @param {string} args Units to pass through to .size
+ */
+.padding-right(...) {
+   .size(padding-right, @arguments); 
+}
+/**
+ * @function .padding-bottom
+ * @description Outputs remified padding-bottom
+ * @param {string} args Units to pass through to .size
+ */
+.padding-bottom(...) {
+   .size(padding-bottom, @arguments); 
+}
+/**
+ * @function .padding-left
+ * @description Outputs remified padding-left
+ * @param {string} args Units to pass through to .size
+ */
+.padding-left(...) {
+   .size(padding-left, @arguments); 
+}
+
+/**
+ * @function .top
+ * @description Outputs remified top
+ * @param {string} args Units to pass through to .size
+ */
+.top(...) {
+   .size(top, @arguments); 
+}
+/**
+ * @function .right
+ * @description Outputs remified right
+ * @param {string} args Units to pass through to .size
+ */
+.right(...) {
+   .size(right, @arguments); 
+}
+/**
+ * @function .bottom
+ * @description Outputs remified bottom
+ * @param {string} args Units to pass through to .size
+ */
+.bottom(...) {
+   .size(bottom, @arguments); 
+}
+/**
+ * @function .left
+ * @description Outputs remified left
+ * @param {string} args Units to pass through to .size
+ */
+.left(...) {
+   .size(left, @arguments); 
+}
+
+/**
+ * @function .border
+ * @description Outputs remified border
+ * @param {string} args Units to pass through to .size
+ */
+.border(...) {
+    .size(border, @arguments);
+}
+/**
+ * @function .border-top
+ * @description Outputs remified border-top
+ * @param {string} args Units to pass through to .size
+ */
+.border-top(...) {
+   .size(border-top, @arguments); 
+}
+/**
+ * @function .border-top-width
+ * @description Outputs remified border-top-width
+ * @param {string} args Units to pass through to .size
+ */
+.border-top-width(...) {
+   .size(border-top-width, @arguments); 
+}
+/**
+ * @function .border-right
+ * @description Outputs remified border-right
+ * @param {string} args Units to pass through to .size
+ */
+.border-right(...) {
+   .size(border-right, @arguments); 
+}
+/**
+ * @function .border-right-width
+ * @description Outputs remified border-right-width
+ * @param {string} args Units to pass through to .size
+ */
+.border-right-width(...) {
+   .size(border-right-width, @arguments); 
+}
+/**
+ * @function .border-bottom
+ * @description Outputs remified border-bottom
+ * @param {string} args Units to pass through to .size
+ */
+.border-bottom(...) {
+   .size(border-bottom, @arguments); 
+}
+/**
+ * @function .border-bottom-width
+ * @description Outputs remified border-bottom-width
+ * @param {string} args Units to pass through to .size
+ */
+.border-bottom-width(...) {
+   .size(border-bottom-width, @arguments); 
+}
+/**
+ * @function .border-left
+ * @description Outputs remified border-left
+ * @param {string} args Units to pass through to .size
+ */
+.border-left(...) {
+   .size(border-left, @arguments); 
+}
+/**
+ * @function .border-left-width
+ * @description Outputs remified border-left-width
+ * @param {string} args Units to pass through to .size
+ */
+.border-left-width(...) {
+   .size(border-left-width, @arguments); 
+}
+
+///**
+// * @ruleset .helloworld
+// * @description What this class should be used for
+// */
+//.helloworld {
+//  color: red;
+//}
+///**
+// * @ruleset #goodbyejupiter
+// * @description What this class should be used for
+// */
+//#goodbyejupiter {
+//  color: red;
+//}
+///**
+// * @ruleset element > foo + bar ~loofah:after
+// * @description What this selector should be used for
+// */
+//element > foo + bar ~ loofah:after {
+//  color: red;
+//}
+
+///*
+//body {
+//    rancid: ~`
+//        (function(){ 
+//            return "Pishyposh";
+//        })()`;
+//}
+//*/
+///*
+//body {
+//    //.border(solid 1 #000000);
+//    zammo: 1/16;
+//    .size(wango, solid rgba(255,255,0,0.25) 1);
+//    .size(crumbo, 1 #000000 dotted);
+//}
+//
+//body {
+//    .siteText();
+//    margin: 0;
+//    background: #ffffff;
+//    //.size(font-size, 4, emcontext-2);
+//    //.size(font-size, 5);
+//    //.size(monkey, 0 1 0 2 remvalue-4 emcontext-2);
+//    //.size(padding, 1, 4, 1 2 7rem 4);
+//    @bodyremvalue: 6;
+//    @bodyemcontext: 1.5;
+//    .font-size(@bodyremvalue, emcontext @bodyemcontext);
+//    .padding(1 0 20px 4em, emcontext @bodyremvalue);
+//}
+//
+//.godh {
+//.size(muppet, 1 2 3, emcontext 2, remvalue 4);
+//.border(solid 1 #333333, emcontext 2, remvalue 4);
+//}
+//
+//body {
+//    .px(2);
+//    .rem(2);
+//    padding: 10% 0 @px 5%;
+//    padding: 10% 0 @rem 5%;
+//}
+//
+//html {
+//    .size(padding,1,0,3,1.4);
+//    //.size(margin,1,2,3,4);
+//    .margin(1,2,3,4);
+//    .top(1);
+//    .left(2);
+//    .right(3);
+//    .bottom(4);
+//    .padding-left(3);
+//    .padding-top(5);
+//    .padding-right(6);
+//    .padding-bottom(10);
+//}
+//body {
+//    .font-size(2);
+//    .padding(2);
+//    .size(2, 1);
+//    .width(60);
+//    .height(0);
+//}
+//
+//
+//
+//#bundle {
+//    .wonky(@foo:jiz) {
+//        body {
+//            neeps: @foo;
+//        }
+//    }
+//    .donkey(@foo:jiz) {
+//        body {
+//            twerps: @foo;
+//        }
+//    }
+//}
+//
+//#bundle.wonky;
+//#bundle.donkey(meat);
+//*/</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3 class="configs">Configs</h3><ul><li><a href="config-bauplan%2525config%25250%25251%25250.html">bauplan.config.0.1.0</a></li><li><a href="config-core%2525config%25250%25251%25250.html">core.config.0.1.0</a></li></ul><h3 class="modules">Modules</h3><ul><li><a href="module-app%2525setup.html">app.setup</a></li><li><a href="module-bauplan.html">bauplan</a></li><li><a href="module-bauplan%2525ajax.html">bauplan.ajax</a></li><li><a href="module-bauplan%2525analytics.html">bauplan.analytics</a></li><li><a href="module-bauplan%2525app.html">bauplan.app</a></li><li><a href="module-bauplan%2525authentication.html">bauplan.authentication</a></li><li><a href="module-bauplan%2525authentication%2525controller.html">bauplan.authentication.controller</a></li><li><a href="module-bauplan%2525collection.html">bauplan.collection</a></li><li><a href="module-bauplan%2525control%2525view.html">bauplan.control.view<small> module</small></a></li><li><a href="module-bauplan%2525controller.html">bauplan.controller</a></li><li><a href="module-bauplan%2525controls.html">bauplan.controls</a></li><li><a href="module-bauplan%2525error%2525view.html">bauplan.error.view<small> module</small></a></li><li><a href="module-bauplan%2525feature.html">bauplan.feature</a></li><li><a href="module-bauplan%2525helpers.html">bauplan.helpers</a></li><li><a href="module-bauplan%2525i18n.html">bauplan.i18n</a></li><li><a href="module-bauplan%2525init.html">bauplan.init</a></li><li><a href="module-bauplan%2525layout%2525controller.html">bauplan.layout.controller</a></li><li><a href="module-bauplan%2525load.html">bauplan.load</a></li><li><a href="module-bauplan%2525model.html">bauplan.model</a></li><li><a href="module-bauplan%2525require.html">bauplan.require</a></li><li><a href="module-bauplan%2525router%2525base.html">bauplan.router.base</a></li><li><a href="module-bauplan%2525templates.html">bauplan.templates</a></li><li><a href="module-bauplan%2525thorax%2525patch.html">bauplan.thorax.patch</a></li><li><a href="module-bauplan%2525tracker.html">bauplan.tracker</a></li><li><a href="module-bauplan%2525view.html">bauplan.view<small> module</small></a></li><li><a href="module-default%2525control.html">default.control</a></li></ul><h3 class="events">Events</h3><ul><li><a href="module-bauplan%2525authentication.html#~event:change:loggedIn">bauplan.authentication~change:loggedIn</a></li><li><a href="module-bauplan%2525authentication.html#~event:change:registered">bauplan.authentication~change:registered</a></li><li><a href="module-bauplan%2525router%2525base.html#~event:window:on:click:a">bauplan.router.base~window:on:click:a</a></li><li><a href="module-bauplan%2525view.html#~event:click:cancelSelector">bauplan.view~click:cancelSelector</a></li><li><a href="module-bauplan%2525view.html#~event:click:saveSelector">bauplan.view~click:saveSelector</a></li><li><a href="module-bauplan%2525view.html#~event:on:rendered">bauplan.view~on:rendered</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:click">bauplan.view~window:on:click</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseenter">bauplan.view~window:on:mouseenter</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseleave">bauplan.view~window:on:mouseleave</a></li></ul><div class="controls"><h2>Controls</h2><h3 class="primitives">Primitives</h3><ul><li><a href="control-boolean.html">boolean</a></li><li><a href="control-integer.html">integer</a></li><li><a href="control-number.html">number</a></li></ul><h3 class="formats">Formats</h3><ul><li><a href="control-email.html">email</a></li><li><a href="control-payment-card.html">payment-card</a></li></ul><h3 class="control-types">Control types</h3><ul><li><a href="control-checkbox.html">checkbox</a></li><li><a href="control-date.html">date</a></li><li><a href="control-password-new.html">password-new</a></li><li><a href="control-payment-date-expiry.html">payment-date-expiry</a></li><li><a href="control-payment-date-start.html">payment-date-start</a></li><li><a href="control-select.html">select</a></li></ul></div><h3 class="template-helpers">Template helpers</h3><ul><li><a href="template-all.html">all</a></li><li><a href="template-asset.html">asset</a></li><li><a href="template-authrouteurl.html">authrouteurl</a></li><li><a href="template-compile.html">compile</a></li><li><a href="template-console.html">console</a></li><li><a href="template-currentTime.html">currentTime</a></li><li><a href="template-if.html">if</a></li><li><a href="template-layout.html">layout</a></li><li><a href="template-link.html">link</a></li><li><a href="template-or.html">or</a></li><li><a href="template-price.html">price</a></li><li><a href="template-routeurl.html">routeurl</a></li><li><a href="template-set.html">set</a></li></ul><h3 class="view-templates">View templates</h3><ul><li><a href="template-control%2525view.html">control.view<small> template</small></a></li><li><a href="template-default%2525abstract%2525view.html">default.abstract.view<small> template</small></a></li><li><a href="template-error%2525view.html">error.view<small> template</small></a></li></ul><h3 class="templates">Templates</h3><ul><li><a href="template-actions.html">actions</a></li><li><a href="template-control.html">control</a></li><li><a href="template-control%2525display.html">control.display</a></li><li><a href="template-control%2525edit.html">control.edit</a></li><li><a href="template-editblock.html">editblock</a></li><li><a href="template-password%2525block.html">password.block</a></li><li><a href="template-selectblock.html">selectblock</a></li></ul><h3 class="control-templates">Control templates</h3><ul><li><a href="template-checkbox%2525edit.html">checkbox.edit</a></li><li><a href="template-date%2525edit.html">date.edit</a></li><li><a href="template-file%2525edit.html">file.edit</a></li><li><a href="template-hidden%2525edit.html">hidden.edit</a></li><li><a href="template-password%2525edit.html">password.edit</a></li><li><a href="template-password-new%2525edit.html">password-new.edit</a></li><li><a href="template-payment-date-expiry%2525edit.html">payment-date-expiry.edit</a></li><li><a href="template-payment-date-start%2525edit.html">payment-date-start.edit</a></li><li><a href="template-select%2525edit.html">select.edit</a></li><li><a href="template-text%2525display.html">text.display</a></li><li><a href="template-text%2525edit.html">text.edit</a></li><li><a href="template-textarea%2525edit.html">textarea.edit</a></li></ul><h3 class="stylesheets">Stylesheets</h3><ul><li><a href="module-mixins%2525bauplan%2525less.html">mixins.bauplan.less</a></li><li><a href="module-mixins%2525less.html">mixins.less</a></li><li><a href="module-sizing%2525bauplan%2525less.html">sizing.bauplan.less</a></li><li><a href="module-sizing%2525less.html">sizing.less</a></li></ul><h3 class="lang-files">Lang files</h3><ul><li><a href="resourcebundle-en%2525properties.html">en</a></li><li><a href="resourcebundle-fr%2525properties.html">fr</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

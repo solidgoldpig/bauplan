@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: js/bauplan.helpers.js</title>
+
+    <script src="scripts/jquery-1.11.2.min.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title"><small>Source</small> js/bauplan.helpers.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module bauplan%helpers
+ * @description ## Helpers for Handlebars
+ * Registers helpers provided by [Larynx](http://larynx.solidgolpig.com), setting locale and languages
+ * Registers additional helpers
+ *
+ * ### Additional helpers
+ * - {@link template:asset}
+ * - {@link template:price}
+ * - {@link template:console}
+ * - {@link template:compile}
+ * - {@link template:link}
+ * - {@link template:if}
+ * - {@link template:all}
+ * - {@link template:or}
+ *
+ * ### Client-side
+ * - {@link template:routeurl}
+ * - {@link template:authrouteurl}
+ * - {@link template:layout}
+ */
+(function (moduleFactory) {
+    if (typeof exports === "object") {
+        module.exports = moduleFactory(
+            require("lodash"),
+            require("bauplan"),
+            require("handlebars"),
+            require("larynx")
+        );
+    } else if (typeof define === "function" &amp;&amp; define.amd) {
+        define([
+            "underscore",
+            "bauplan",
+            "handlebars",
+            "larynx",
+            "jquery",
+            "thorax",
+            "router"
+        ], moduleFactory);
+    }
+}(function (
+    _,
+    Bauplan,
+    Handlebars,
+    Larynx,
+    jQuery,
+    Thorax,
+    Router
+) {
+
+    // Set up Larynx helpers
+    Larynx.registerHelpers(Handlebars);
+    Larynx.setLanguages(Bauplan.I18N.langs);
+
+    // Convenience filter for phrases
+    Larynx.Phrase.setFilter(function (str) {
+        return str.replace(/##(.*?)##/g, "&lt;span>$1&lt;/span>");
+    });
+
+    // Register additional helpers
+
+    /**
+     * @template asset
+     * @block helper
+     * @description  Outputs an asset path using an i18n key
+     *
+     * Given a i18n key/value pair: "logo.src=/path/to/logo.png"
+     * 
+     *     &lt;img src="{{asset "logo.src"}}"> -> '&lt;img src="/path/to/logo.png">'
+     *
+     * asset is currently just a wrapper for Handlebars.helpers.phrase
+     */
+    Handlebars.registerHelper("asset", function () {
+        return Handlebars.helpers.phrase.apply({}, arguments);
+    });
+
+    /**
+     * @template currentTime
+     * @block helper
+     * @description Outputs the current time
+     *
+     *     {{currentTime}}
+     */
+    Handlebars.registerHelper("currentTime", function (block) {
+        return Date.now();
+    });
+
+    /**
+     * @template price
+     * @block helper
+     * @param {number} 0 Amount
+     * @description Outputs an amount in 1/100th of monetary unit as monetary unit
+     *
+     *     {{price 2999}} -> "29.99"
+     * 
+     *     {{price 3000}} -> "30"
+     *
+     * Calls Handlebars.helpers.number, so accepts the same arguments and has the same defaults, eg.
+     *
+     *     {{price 3000 format="0.00"}} -> "30.00"
+     */
+    Handlebars.registerHelper("price", function (block) {
+        var args = Array.prototype.slice.call(arguments);
+        var price = args[0];
+        if (price) {
+            args[0] = price/100;
+        }
+        return Handlebars.helpers.number.apply({}, args);
+    });
+
+    /**
+     * @template console
+     * @block helper
+     * @param {*} 0 Item to dump
+     * @description Dumps output using console.log
+     * 
+     *     {{console foo}}
+     */
+    Handlebars.registerHelper("console", function (block) {
+        console.log(arguments[0], Date.now());
+    });
+
+    /**
+     * @template compile
+     * @block helper
+     * @param {string} 0 String to compile
+     * @param {string} [context] Pass a different context - (the value must be a property key of the current context)
+     * @description Compile a string as a template
+     *
+     * Given a context where {bar: "baz", wham: {bar: "whizz"}}
+     * 
+     *     {{compile "foo {{bar}}"}} -> "foo bar"
+     *
+     *     {{{compile "foo {{bar}}" context="wham"}}} -> "foo whizz"
+     *
+     *     {{{compile "foo {{bar}}" context="nosuch"}}} -> "foo "
+     */
+    Handlebars.registerHelper("compile", function (templatestr) {
+        var template = Handlebars.compile(templatestr);
+        var hash = arguments[1].hash;
+        var context = this;
+        if (hash.context) {
+            context = context[hash.context] || {};
+        }
+        return template(context);
+    });
+
+    /**
+     * @template set
+     * @block helper
+     * @param {string} 0 Property to set
+     * @param {*} 1 Value to be set
+     * @description Sets a value within the current context
+     * @example {{set foo "bar"}}
+     */
+    Handlebars.registerHelper("set", function (name, value) {
+        //console.log(arguments[0], (new Date()).getTime());
+        var setReturn = "";
+        if (typeof name === "string") {
+            this[name] = value;
+        } else {
+            var options = name;
+            var hash = options.hash;
+            if (options.fn) {
+                var context = _.extend({}, this, hash);
+                setReturn = options.fn(context);
+            } else {
+                for (var prop in hash) {
+                    this[prop] = hash[prop];
+                }
+            }
+        }
+        return setReturn;
+    });
+
+    /**
+     * @template link
+     * @block helper
+     * @param {string} 0 String to use for URL
+     * @param {string} [target] Window target for URL - defaults to "external" 
+     * @param {string} [content] Content of the link - supercedes any yielded value
+     * @description Generates links using urls or localisation keys, prefixing with domain if necessary.
+     *
+     * Accepts protocol-less URLs and email addresses
+     *
+     * Given:
+     * 
+     * - a i18n key/value pair: "foo.href=/foo"
+     * - the current hostname: "http://domain"
+     *
+     *       {{#link "/foo"}}Bar{{/link}}
+     *          -> '&lt;a href="http://domain/foo" target="external">Bar&lt;/a>'
+     *
+     * Specify a different target
+     * 
+     *       {{#link "/foo" target="newtarget"}}Bar{{/link}}
+     *          -> '&lt;a href="http://domain/foo" target="newtarget">Bar&lt;/a>'
+     *
+     * Specify no target
+     * 
+     *       {{#link "/foo" target=""}}Bar{{/link}}
+     *          -> '&lt;a href="http://domain/foo">Bar&lt;/a>'
+     *
+     * Pass content explicitly
+     * 
+     *       {{link "/foo" content="Bar"}}
+     *          -> '&lt;a href="http://domain/foo" target="external">Bar&lt;/a>'
+     *
+     * Use a i18n key
+     *
+     *       {{#link "foo.href"}}Bar{{/link}}
+     *          -> '&lt;a href="http://domain/foo" target="external">Bar&lt;/a>'
+     *
+     * URLs with a protocol
+     *       {{#link "https://externaldomain/foo"}}Bar{{/link}}
+     *          -> '&lt;a href="https://externaldomain/foo" target="external">Bar&lt;/a>'
+     *
+     * Protocol-less URLs
+     * 
+     *       {{#link "//anotherdomain/foo"}}Bar{{/link}}
+     *          -> '&lt;a href="//anotherdomain/foo" target="external">Bar&lt;/a>'
+     *
+     * But if context contains {isMail: true}
+     * 
+     *       {{#link "//anotherdomain/foo"}}Bar{{/link}}
+     *          -> '&lt;a href="https://anotherdomain/foo" target="external">Bar&lt;/a>'
+     *
+     * Email addresses
+     * 
+     *       {{#link "foo@domain"}}Bar{{/link}}
+     *          -> '&lt;a href="mailto:/foo@domain">Bar&lt;/a>'
+     */
+    var hostname = document.location.origin; //"//" + document.location.host;
+    Handlebars.registerHelper("link", function () {
+        var args = Array.prototype.slice.call(arguments);
+        var options = args.pop();
+        var url = args[0];
+        if (url) {
+            var urlphrase = Larynx.Phrase.get(url, {hostname: hostname});
+            if (urlphrase) {
+                url = urlphrase.toString();
+            }
+        } else {
+            url = "/";
+        }
+        if (url === "/") {
+            url = hostname;
+        } else if (url.match(/^\/[^\/]/)) {
+            url = hostname + url;
+        }
+        var params = options.hash || {};
+        var content = params.content || (options.fn &amp;&amp; options.fn()) || url.replace(/.*\/\//, "");
+
+        if (params.target === undefined &amp;&amp; url.match(/\/\//)) {
+            params.target = "external";
+        }
+        if (this.isMail) {
+            if (url.indexOf("//") === 0) {
+                url = "https:" + url;
+            }
+        }
+        if (url.match(/@/) &amp;&amp; url.indexOf("mailto:") !== 0) {
+            url = "mailto:" + url;
+        }
+        return new Handlebars.SafeString('&lt;a href="' + url + '"' + (params.target ? ' target="' + params.target + '"' : '') + '>' + content + '&lt;/a>');
+    });
+
+    /**
+     * @template if
+     * @block helper
+     * @extends Handlebars.helpers
+     * @override
+     * @param {*} 0 Item to compare
+     * @param {string} [1] Operator
+     * @param {*} [2] Item to be compared to
+     * @param {...*} [3...] See individual operators to see how further param works
+     * @description  Overrides Handlebars.helpers.if
+     *
+     * ### No operator
+     * Truthiness - standard Handlebars if helper behaviour
+     *
+     *     {{#if "foo"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if ""}}Yes{{else}}No{{/if}} -> "No"
+     *     
+     * ### ==
+     * ‘Truthy’ equality
+     *
+     *     {{#if "1" "==" 1}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "1" "==" "2"}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * ### ===
+     * Strict equality
+     *
+     *     {{#if "1" "===" "1"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "1" "===" 1}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * ### !=
+     * ‘Truthy’ inequality
+     *
+     *     {{#if "1" "!=" "2"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "1" "!=" 1}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * ### !==
+     * Strict inequality
+     *
+     *     {{#if "1" "!==" 1}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "1" "!==" "1"}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * ### &lt;
+     * Less than
+     *
+     *     {{#if 1 "&lt;" 2}}Yes{{/if}} -> "Yes"
+     *
+     * ### >
+     * More than
+     *
+     *     {{#if 2 ">" 1}}Yes{{/if}} -> "Yes"
+     *
+     * ### &lt;
+     * Less than or equal
+     *
+     *     {{#if 1 "&lt;=" 1}}Yes{{/if}} -> "Yes"
+     *
+     * ### >
+     * More than or equal
+     *
+     *     {{#if 1 ">=" 1}}Yes{{/if}} -> "Yes"
+     * 
+     * ### &amp;&amp;
+     * And operator
+     *
+     *     {{#if "foo" "&amp;&amp;" "bar"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "foo" "&amp;&amp;" "bar" "&amp;&amp;" "baz"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "foo" "&amp;&amp;" "bar" "&amp;&amp;" ""}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * NB. You cannot mix different operators
+     * See also {@link template:all}
+     * 
+     * ### ||
+     * Or operator
+     *
+     *     {{#if "" "||" "bar"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "foo" "||" "" "||" "baz"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "" "||" 0 "||" ""}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * NB. You cannot mix different operators
+     * See also {@link template:or}
+     *
+     * ### is
+     * Lodash is* methods
+     *
+     *     {{#if "foo" "is" "String"}}Yes{{/if}} -> "Yes"
+     *
+     * Method has first letter uppercased automatically
+     *
+     *     {{#if "foo" "is" "string"}}Yes{{/if}} -> "Yes"
+     *
+     * ### constructor
+     *
+     *     {{#if "foo" "constructor" "String"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "foo" "constructor" "string"}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * ### typeof
+     * 
+     *     {{#if "foo" "typeof" "string"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "foo" "typeof" "String"}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * ### has
+     *
+     *     {{#if "foo" "has" "oo"}}Yes{{/if}} -> "Yes"
+     *
+     * Also aliased to &lt;code>contains&lt;/code>
+     *
+     *     {{#if "foo" "contains" "oo"}}Yes{{/if}} -> "Yes"
+     *
+     * See also {@link template:has}
+     *
+     * ### matches
+     *
+     *     {{#if "foo" "matches" "fo{2,}"}}Yes{{/if}}
+     *
+     * Also aliased to &lt;code>match&lt;/code>
+     *
+     *     {{#if "foo" "match" "fo{2,}"}}Yes{{/if}}
+     *
+     * See also {@link template:match}
+     *
+     * ### in
+     *
+     *     {{#if "foo" "in" "foo" "bar" "baz"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "fo" "in" "foo" "bar" "baz"}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * ### matchesin
+     *
+     *     {{#if "foo" "matchesin" "fo" "bar" "daz"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "foo" "matchesin" "fo\b" "bar" "daz"}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * Also aliased to &lt;code>matchin&lt;/code>
+     *
+     *     {{#if "foo" "matchin" "fo" "bar" "daz"}}Yes{{/if}} -> "Yes"
+     *
+     * ### matchesall
+     *
+     *     {{#if "foo" "matchesall" "f.{2}" "o+"}}Yes{{/if}} -> "Yes"
+     *
+     *     {{#if "foo" "matchesin" "f.{2}" "\bo+"}}Yes{{else}}No{{/if}} -> "No"
+     *
+     * Also aliased to &lt;code>matchin&lt;/code>
+     *
+     *     {{#if "foo" "matchall" "f.{2}" "o+"}}Yes{{/if}} -> "Yes"
+     *
+     */
+    /*
+    {{!--
+    Not implemented - but maybe a good idea
+    {{#has x $has}}foo{{/has}}
+    {{#match x $match}}foo{{/match}}
+    {{#in x $match1 $match2}}foo{{/in}} - contained?
+    {{#matchin x $match1 $match2}}foo{{/matchin}}
+    {{#matchin x $match1 $match2}}foo{{/matchin}}
+    {{#fallback valueToUse}}Fallback value{{/fallback}}
+    {{#if x "defined"}}
+    {{exists x y z}}
+    {{defined x y z}} -> print first value that is defined
+    no need for a defaultified version - just make sure the last one is an actual value
+    - but, what if we want to use it as a key for phrase?
+    - well, don't do that do {{#if x "||" y "||" z}}{{exists x y z}}{{else}}{{phrase default}}{{/if}} - hmmmm
+    - use “standard” @@foo@@ syntax?  @foo@ [@foo@] 
+    {{first x y z}} -> print first value to exist
+    {{last x y z}} -> prints first value to exist or last if none do
+    {{every x y z}} -> prints all values that exist
+    NB. "0" will be skipped
+    --}}
+    */
+    function rightify(r, rs) {
+        if (typeof r === "object") {
+            rs = r;
+        }
+        return rs;
+    }
+    var operators = {
+        "==": function (l, r) { return l == r; },
+        "===": function (l, r) { return l === r; },
+        "!=": function (l, r) { return l != r; },
+        "!==": function (l, r) { return l !== r; },
+        "&lt;": function (l, r) { return l &lt; r; },
+        ">": function (l, r) { return l > r; },
+        "&lt;=": function (l, r) { return l &lt;= r; },
+        ">=": function (l, r) { return l >= r; },
+        "&amp;&amp;": function (l, r, rs) {
+            var truth = l &amp;&amp; r;
+            if (truth &amp;&amp; rs[1]) {
+                rs.shift();
+                var operator = rs.shift();
+                r = rs.shift();
+                if (operator === "&amp;&amp;") {
+                    truth = operators["&amp;&amp;"](l, r, rs);
+                } else {
+                    truth = false;
+                }
+            }
+            return truth;
+        },
+        "||": function (l, r, rs) {
+            var truth = l || r;
+            if (!truth &amp;&amp; rs[1]) {
+                rs.shift();
+                var operator = rs.shift();
+                r = rs.shift();
+                if (operator === "||") {
+                    truth = operators["||"](l, r, rs);
+                }
+            }
+            return truth;
+        },
+        "is": function (l, r) {
+            var method = "is" + r.replace(/^(.)/, function (x){
+                return x.toUpperCase();
+            });
+            if (!_[method]) {
+                return false;
+            }
+            return _[method](l);
+        },
+        "constructor": function (l, r) { return l &amp;&amp; l.constructor &amp;&amp; l.constructor.name == r; },
+        "typeof": function (l, r) { return typeof l == r; },
+        "has": function (l, r) { return l &amp;&amp; l.indexOf(r) !== -1; },
+        "matches": function (l, r, rs) {
+            var matchreg = r.constructor.name === "RegExp" ? r : new RegExp(r, rs[1]);
+            return matchreg.exec(l) !== null;
+        },
+        "in": function (l, r, rs) {
+            rs = rightify(r, rs);
+            if (_.isArray(rs)) {
+                for (var ai = 0, rslen = rs.length; ai &lt; rslen; ai++) {
+                    if (l === rs[ai]) {
+                        return true;
+                    }
+                }
+            } else if (_.isObject(rs)) {
+                for (var oi in rs) {
+                    if (l === rs[oi]) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        },
+        "matchesin": function (l, r, rs) {
+            rs = rightify(r, rs);
+            for (var ai = 0, rslen = rs.length; ai &lt; rslen; ai++) {
+                if (operators.matches(l, rs[ai], [])) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        "matchesall": function (l, r, rs) {
+            rs = rightify(r, rs);
+            for (var ai = 0, rslen = rs.length; ai &lt; rslen; ai++) {
+                if (!operators.matches(l, rs[ai], [])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    };
+    operators.contains = operators.has;
+    operators.match = operators.matches;
+    operators.matchin = operators.matchesin;
+    operators.matchall = operators.matchesall;
+    Handlebars.registerHelper("if", function () {
+        var args = Array.prototype.slice.call(arguments),
+            options = args.pop(),
+            lvalue = args.shift(),
+            operator = args.shift(),
+            rvalues = _.extend([], args),
+            rvalue = args.shift(),
+            result = lvalue;
+
+        if (operator !== undefined) {
+
+            if (arguments.length &lt; 3) {
+                throw new Error("Handlerbars Helper 'if' needs 2 parameters");
+            }
+
+            if (options === undefined) {
+                options = rvalue;
+                rvalue = operator;
+                operator = "==";
+            }
+
+            if (!operators[operator]) {
+                throw new Error("Handlerbars Helper 'if' doesn't know the operator " + operator);
+            }
+
+            result = operators[operator](lvalue, rvalue, rvalues);
+        }
+
+        var context = this; //_.extend({}, this, options.hash);
+        //console.log("context", context);
+        if (result) {
+            return options.fn(context);
+        } else {
+            return options.inverse(context);
+        }
+
+    });
+    /**
+     * @template all
+     * @block helper
+     * @description Outputs the yielded content if all conditions are met
+     * 
+     *     {{#all "a" "b" 3}}This will be output{{/all}} -> "This will be output"
+     *     
+     *     {{#all "a" "" 3}}This will not be output{{/all}} -> ""
+     *
+     * See also {@link template:if}~&amp;&amp;
+     */
+    Handlebars.registerHelper("all", function () {
+        var args = Array.prototype.slice.call(arguments);
+        var options = args.pop();
+        var result = true;
+        for (var i = 0, argslen = args.length; i &lt; argslen; i++) {
+            if (!args[i]) {
+                result = false;
+                break;
+            }
+        }
+        if (result) {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
+    });
+    /**
+     * @template or
+     * @block helper
+     * @description Outputs the yielded content if any of the conditions are met
+     * 
+     *     {{#or "" "b" ""}}This will be output{{/or}} -> "This will be output"
+     * 
+     *     {{#or "" 0 ""}}This will not be output{{/or}} -> ""
+     *
+     * See also {@link template:if}~||
+     */
+    Handlebars.registerHelper("or", function () {
+        var args = Array.prototype.slice.call(arguments);
+        var options = args.pop();
+        var result = false;
+        for (var i = 0, argslen = args.length; i &lt; argslen; i++) {
+            if (args[i]) {
+                result = true;
+                break;
+            }
+        }
+        if (result) {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
+    });
+
+    /*
+        Client-side helpers
+    */
+    if (Router) {
+        /**
+         * @template routeurl
+         * @block helper
+         * @param {string} 0 Route name
+         * @param {object} [params] Additional params to be passed to the underlying router method
+         * @description Outputs a URL given the name of a route
+         * 
+         *      {{routeurl "route.key"}}
+         *
+         * See {@link module:bauplan%router%base.reverse}
+         */
+        Handlebars.registerHelper("routeurl", function () {
+            var route = arguments[0];
+            var params = {};
+            var options = arguments[1];
+            if (options.hash) {
+                params = _.extend((options.hash.params) || {}, options.hash);
+                delete options.hash.params;
+            }
+            var url = Router.reverse(route, params);
+            return url;
+        });
+        /**
+         * @template authrouteurl
+         * @block helper
+         * @param {string} 0 Route name
+         * @param {object} [params] Additional params to be passed to the underlying router method
+         * @description Outputs a URL given the name of a route that ensures that the user is logged in first
+         * 
+         *      {{authrouteurl "route.key"}}
+         *
+         * See {@link module:bauplan%router%base.reverseWithAuth}
+         *
+         * (Possibly somewhat redundant since protected URLs will always redirect to the auth'd URL any way)
+         */
+        Handlebars.registerHelper("authrouteurl", function () {
+            var route = arguments[0];
+            var params = {};
+            var options = arguments[1];
+            if (options.hash) {
+                params = _.extend((options.hash.params) || {}, options.hash);
+                delete options.hash.params;
+            }
+            var url = Router.reverseWithAuth(route, params);
+            return url;
+        });
+        /**
+         * @template layout
+         * @block helper
+         * @param {string} view Name of view to load
+         * @param {string} [id] Id to override default Id
+         * @param {object} [options] Options to pass to view loaded by layout view
+         * @param {string} [tagName] Tag name to override layout view’s default tag
+         * @param {string} [role] Role to add to layout view element
+         * @description  Inserts a Thorax.LayoutView and loads a view
+         * 
+         *     {{layout view="foo"}}
+         *
+         *     {{layout id="bar" view=view options=viewOptions}}
+         *     
+         *     {{layout tagName="header" role="banner" view="site-header"}}
+         */
+        var layoutCallback = 0;
+        Handlebars.registerHelper("layout", function () {
+            var name;
+            var options;
+
+            if (arguments.length > 1) {
+                name = arguments[0];
+                options = arguments[1];
+            } else {
+                options = arguments[0];
+            }
+
+            var lOptions = options.hash || {};
+            if (name) {
+                lOptions.name = name;
+            }
+
+            var layoutView = new Thorax.LayoutView(lOptions);
+            if (lOptions.view) {
+                var nestedView = Thorax.LayoutViews[lOptions.view] || Thorax.Views[lOptions.view];
+                var nested = new nestedView(lOptions.options);
+                layoutView.setView(nested);
+            }
+            var callbackCount = 0;
+            var placeholder = "layoutViewPlaceholder" + layoutCallback;
+            var selector = "#" + placeholder;
+            function appendLayout() {
+                // Nasty - we have to keep checking until the element exists within the DOM,
+                // unfortunately a limitation of Thorax
+                if (!jQuery(selector).length) {
+                    callbackCount++;
+                    var pause = callbackCount > 1000 ? 1000 : 1;
+                    setTimeout(appendLayout, pause);
+                } else {
+                    jQuery(selector).replaceWith(layoutView.el);
+                    layoutView.$el.find("[layoutshim]").remove();
+                    jQuery("[layoutshim]").remove();
+                }
+            }
+            setTimeout(appendLayout, 0);
+            layoutCallback++;
+            return new Handlebars.SafeString("&lt;span id=\"" + placeholder + "\">&lt;/span>");
+        });
+    }
+
+    return Handlebars;
+
+}));</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3 class="configs">Configs</h3><ul><li><a href="config-bauplan%2525config%25250%25251%25250.html">bauplan.config.0.1.0</a></li><li><a href="config-core%2525config%25250%25251%25250.html">core.config.0.1.0</a></li></ul><h3 class="modules">Modules</h3><ul><li><a href="module-app%2525setup.html">app.setup</a></li><li><a href="module-bauplan.html">bauplan</a></li><li><a href="module-bauplan%2525ajax.html">bauplan.ajax</a></li><li><a href="module-bauplan%2525analytics.html">bauplan.analytics</a></li><li><a href="module-bauplan%2525app.html">bauplan.app</a></li><li><a href="module-bauplan%2525authentication.html">bauplan.authentication</a></li><li><a href="module-bauplan%2525authentication%2525controller.html">bauplan.authentication.controller</a></li><li><a href="module-bauplan%2525collection.html">bauplan.collection</a></li><li><a href="module-bauplan%2525control%2525view.html">bauplan.control.view<small> module</small></a></li><li><a href="module-bauplan%2525controller.html">bauplan.controller</a></li><li><a href="module-bauplan%2525controls.html">bauplan.controls</a></li><li><a href="module-bauplan%2525error%2525view.html">bauplan.error.view<small> module</small></a></li><li><a href="module-bauplan%2525feature.html">bauplan.feature</a></li><li><a href="module-bauplan%2525helpers.html">bauplan.helpers</a></li><li><a href="module-bauplan%2525i18n.html">bauplan.i18n</a></li><li><a href="module-bauplan%2525init.html">bauplan.init</a></li><li><a href="module-bauplan%2525layout%2525controller.html">bauplan.layout.controller</a></li><li><a href="module-bauplan%2525load.html">bauplan.load</a></li><li><a href="module-bauplan%2525model.html">bauplan.model</a></li><li><a href="module-bauplan%2525require.html">bauplan.require</a></li><li><a href="module-bauplan%2525router%2525base.html">bauplan.router.base</a></li><li><a href="module-bauplan%2525templates.html">bauplan.templates</a></li><li><a href="module-bauplan%2525thorax%2525patch.html">bauplan.thorax.patch</a></li><li><a href="module-bauplan%2525tracker.html">bauplan.tracker</a></li><li><a href="module-bauplan%2525view.html">bauplan.view<small> module</small></a></li><li><a href="module-default%2525control.html">default.control</a></li></ul><h3 class="events">Events</h3><ul><li><a href="module-bauplan%2525authentication.html#~event:change:loggedIn">bauplan.authentication~change:loggedIn</a></li><li><a href="module-bauplan%2525authentication.html#~event:change:registered">bauplan.authentication~change:registered</a></li><li><a href="module-bauplan%2525router%2525base.html#~event:window:on:click:a">bauplan.router.base~window:on:click:a</a></li><li><a href="module-bauplan%2525view.html#~event:click:cancelSelector">bauplan.view~click:cancelSelector</a></li><li><a href="module-bauplan%2525view.html#~event:click:saveSelector">bauplan.view~click:saveSelector</a></li><li><a href="module-bauplan%2525view.html#~event:on:rendered">bauplan.view~on:rendered</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:click">bauplan.view~window:on:click</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseenter">bauplan.view~window:on:mouseenter</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseleave">bauplan.view~window:on:mouseleave</a></li></ul><div class="controls"><h2>Controls</h2><h3 class="primitives">Primitives</h3><ul><li><a href="control-boolean.html">boolean</a></li><li><a href="control-integer.html">integer</a></li><li><a href="control-number.html">number</a></li></ul><h3 class="formats">Formats</h3><ul><li><a href="control-email.html">email</a></li><li><a href="control-payment-card.html">payment-card</a></li></ul><h3 class="control-types">Control types</h3><ul><li><a href="control-checkbox.html">checkbox</a></li><li><a href="control-date.html">date</a></li><li><a href="control-password-new.html">password-new</a></li><li><a href="control-payment-date-expiry.html">payment-date-expiry</a></li><li><a href="control-payment-date-start.html">payment-date-start</a></li><li><a href="control-select.html">select</a></li></ul></div><h3 class="template-helpers">Template helpers</h3><ul><li><a href="template-all.html">all</a></li><li><a href="template-asset.html">asset</a></li><li><a href="template-authrouteurl.html">authrouteurl</a></li><li><a href="template-compile.html">compile</a></li><li><a href="template-console.html">console</a></li><li><a href="template-currentTime.html">currentTime</a></li><li><a href="template-if.html">if</a></li><li><a href="template-layout.html">layout</a></li><li><a href="template-link.html">link</a></li><li><a href="template-or.html">or</a></li><li><a href="template-price.html">price</a></li><li><a href="template-routeurl.html">routeurl</a></li><li><a href="template-set.html">set</a></li></ul><h3 class="view-templates">View templates</h3><ul><li><a href="template-control%2525view.html">control.view<small> template</small></a></li><li><a href="template-default%2525abstract%2525view.html">default.abstract.view<small> template</small></a></li><li><a href="template-error%2525view.html">error.view<small> template</small></a></li></ul><h3 class="templates">Templates</h3><ul><li><a href="template-actions.html">actions</a></li><li><a href="template-control.html">control</a></li><li><a href="template-control%2525display.html">control.display</a></li><li><a href="template-control%2525edit.html">control.edit</a></li><li><a href="template-editblock.html">editblock</a></li><li><a href="template-password%2525block.html">password.block</a></li><li><a href="template-selectblock.html">selectblock</a></li></ul><h3 class="control-templates">Control templates</h3><ul><li><a href="template-checkbox%2525edit.html">checkbox.edit</a></li><li><a href="template-date%2525edit.html">date.edit</a></li><li><a href="template-file%2525edit.html">file.edit</a></li><li><a href="template-hidden%2525edit.html">hidden.edit</a></li><li><a href="template-password%2525edit.html">password.edit</a></li><li><a href="template-password-new%2525edit.html">password-new.edit</a></li><li><a href="template-payment-date-expiry%2525edit.html">payment-date-expiry.edit</a></li><li><a href="template-payment-date-start%2525edit.html">payment-date-start.edit</a></li><li><a href="template-select%2525edit.html">select.edit</a></li><li><a href="template-text%2525display.html">text.display</a></li><li><a href="template-text%2525edit.html">text.edit</a></li><li><a href="template-textarea%2525edit.html">textarea.edit</a></li></ul><h3 class="stylesheets">Stylesheets</h3><ul><li><a href="module-mixins%2525bauplan%2525less.html">mixins.bauplan.less</a></li><li><a href="module-mixins%2525less.html">mixins.less</a></li><li><a href="module-sizing%2525bauplan%2525less.html">sizing.bauplan.less</a></li><li><a href="module-sizing%2525less.html">sizing.less</a></li></ul><h3 class="lang-files">Lang files</h3><ul><li><a href="resourcebundle-en%2525properties.html">en</a></li><li><a href="resourcebundle-fr%2525properties.html">fr</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

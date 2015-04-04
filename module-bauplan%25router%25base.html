@@ -1,0 +1,4031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: bauplan.router.base</title>
+
+    <script src="scripts/jquery-1.11.2.min.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title"><small>Module</small> bauplan.router.base</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+
+
+    
+        
+    
+
+    
+        
+            <div class="description"><h2>RouterBase</h2><pre class="prettyprint source"><code>var BauplanRouterBase = require(&quot;bauplan.router.base&quot;);</code></pre><p>or as part of the Bauplan bundle</p>
+<pre class="prettyprint source"><code>var Bauplan = require(&quot;bauplan&quot;);
+var BauplanRouterBase = Bauplan.BauplanRouterBase;</code></pre><p>To create and instantiate a new Router instance</p>
+<pre class="prettyprint source"><code>var Router = RouterBase.extend();
+var router = new Router({
+    config: {
+        &quot;foo/:param&quot;: &quot;foo&quot;
+    },
+    methods: {
+        &quot;foo&quot;: function (param) {
+            …
+        }
+    }
+});</code></pre><p>This creates a route with a URL pattern</p>
+<ul>
+<li>foo - /^\/foo\/([^\/]+)$/ eg. /foo/lish</li>
+</ul>
+<p>When called invokes the foo method with the argument param (lish)</p>
+<p>The individual config properties can also be passed as objects </p>
+<pre class="prettyprint source"><code>var router = new Router({
+    config: {
+        &quot;bar&quot; : {
+            name: &quot;barbar&quot;,
+            authenticated: true
+        },
+        &quot;baz/:a/:b/*c&quot;: {
+            name: &quot;baz&quot;,
+            method: function (a, b, c) {}
+        }
+    },
+    methods: {
+        &quot;barbar&quot;: function () {}
+    }
+});</code></pre><p>This creates 2 routes with the following URL patterns</p>
+<ol>
+<li>barbar - /^\/bar$/ ie. /bar</li>
+<li>baz - /^\/baz\/([^\/]+)\/([^\/]+)\/(.*)$/ eg. /baz/tas/tic/al/journey</li>
+</ol>
+<p>The barbar route requires authentication and invokes the barbar method</p>
+<p>The baz route invokes the method defined in the method property of config.baz, with the arguments a (tas), b (tic) and c (al/journey)</p>
+<h3>Link handling</h3><p>All a element clicks are intercepted
+unless:</p>
+<ul>
+<li>_target</li>
+<li>.external</li>
+<li>mailto:</li>
+</ul>
+<p>See <a href="module-bauplan%2525router%2525base.html#~event:window:on:click:a">bauplan.router.base~window:on:click:a</a></p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="returns">Returns</h5>
+
+        
+<div class="param-desc">
+    <p>BauplanRouterBase</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">constructor</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li>underscore</li>
+        
+            <li>jquery</li>
+        
+            <li>backbone</li>
+        
+            <li><a href="module-bauplan%2525authentication.html">bauplan.authentication</a></li>
+        
+            <li><a href="module-bauplan%2525tracker.html">bauplan.tracker</a></li>
+        </ul>
+    
+
+    
+
+     
+
+    
+
+    
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+            
+            
+
+<h4 class="name" id=".previousStack"><span class="type-signature">(private, static) </span><span class="">previousStack<span class="type-signature"></span></span></h4>
+
+
+
+
+<div class="description">
+    <p>Registry for storing app’s previous state</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line482">line 482</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+            
+            
+
+<h4 class="name" id=".reverseRoutes"><span class="type-signature">(static) </span><span class="">reverseRoutes<span class="type-signature"></span></span></h4>
+
+
+
+
+<div class="description">
+    <p>Registry for reversed routes</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line569">line 569</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+            
+            
+
+<h4 class="name" id=".urlStack"><span class="type-signature">(private, static) </span><span class="">urlStack<span class="type-signature"></span></span></h4>
+
+
+
+
+<div class="description">
+    <p>For storing app's URL previous and current history</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line435">line 435</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+            
+            
+
+<h4 class="name" id="~urlList"><span class="type-signature">(private, inner) </span><span class="">urlList<span class="type-signature"> :array</span></span></h4>
+
+
+
+
+<div class="description">
+    <p>Simple array of URLs visited</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">array</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line218">line 218</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".callRoute"><span class="type-signature">(static) </span>callRoute<span class="signature">(route, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Navigate to a route by the name of the route, rather than by URL</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>route</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Route name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Options to pass to this.navigate</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.&#8203;trigger</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>Route triggering</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.&#8203;options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Overriding options</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.&#8203;params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Params to pass to route URL</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line338">line 338</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".callRouteWithAuth"><span class="type-signature">(static) </span>callRouteWithAuth<span class="signature">(url, replace<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Navigate to a route where the user can authenticate before proceeding to the desired URL</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>URL which requires authentication</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>replace</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Whether to replace the previous entry in the user agent’s history</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line384">line 384</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".checkAuthenticatedUrl"><span class="type-signature">(static) </span>checkAuthenticatedUrl<span class="signature">(url, replace<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Checks whether a URL needs authentication</p>
+<p>If it does, and the user is not authenticated, performs a redirect to an authentication page.</p>
+<p>Once the user has authenticated, they will be redirected to the origally requested URL</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>URL to check</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>replace</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Whether to replace the previous entry in the user agent’s history</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line421">line 421</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".getAuthRoute"><span class="type-signature">(static) </span>getAuthRoute<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Get a redirect route based on whether the user has registered or not</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line373">line 373</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="returns">Returns</h5>
+
+        
+<div class="param-desc">
+    <p>Authentication redirect route</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".getRoute"><span class="type-signature">(static) </span>getRoute<span class="signature">(url)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Get the route that a URL resolves to</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>URL to look up</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line401">line 401</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="returns">Returns</h5>
+
+        
+<div class="param-desc">
+    <p>Route name</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".getUrlList"><span class="type-signature">(static) </span>getUrlList<span class="signature">()</span><span class="type-signature"> &rarr; {array}</span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line440">line 440</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="returns">Returns</h5>
+
+        
+<div class="param-desc">
+    <p>List of app URLs in order visited</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".initialize"><span class="type-signature">(static) </span>initialize<span class="signature">(options)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Create router instance</p>
+<ul>
+<li>Register routes</li>
+<li>Register corresponding methods</li>
+<li>Register routes requiring authentication</li>
+<li>Attach event handlers to allow non-app links to work as normal</li>
+<li>Start Backbone.History</li>
+<li>Perform stored redirect if needed</li>
+<li>Check whether current page requires authentication</li>
+<li>Track pageview</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Key/value pairs of route URL patterns and route options (name, method, authentication)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line242">line 242</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".navigate"><span class="type-signature">(static) </span>navigate<span class="signature">(url, options)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Overrides Backbone.Router.prototype.navigate</p>
+<ul>
+<li>checks whether route is protected and if so, whether the user has the right permissions</li>
+<li>redirects to any stored redirect URL</li>
+<li>redirects to locked page if needed</li>
+<li>updates previous and current url stacks</li>
+<li>tracks pageview</li>
+<li>sets referrer if needed</li>
+<li>prevents invoking empty URLs</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>URL to invoke</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>XXXX</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line512">line 512</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".override"><span class="type-signature">(static) </span>override<span class="signature">(route, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Interrupt any currently invoked route and navigate to the route specified</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>route</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Route name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>this.navigate options</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line362">line 362</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".previous"><span class="type-signature">(static) </span>previous<span class="signature">(name, options)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Navigate to the app’s idea of the previous route</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Name of previous route</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>XXXX</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.&#8203;trigger</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>Whether to trigger the route</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.&#8203;replace</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>Whether to replace the URL in the history</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.&#8203;route</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Route to use for URL</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.&#8203;params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Params to pass to Route reversing</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options.&#8203;url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Explicit URL to use</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line454">line 454</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".reverse"><span class="type-signature">(static) </span>reverse<span class="signature">(name, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Get URL for a route</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Route name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Additional params for route</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line170">line 170</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="returns">Returns</h5>
+
+        
+<div class="param-desc">
+    <p>URL for route</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".reverseRoute"><span class="type-signature">(private, static) </span>reverseRoute<span class="signature">(route, name)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Add route URL pattern to reversed route registry</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>route</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>URL pattern</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Name of route</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line561">line 561</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".reverseWithAuth"><span class="type-signature">(static) </span>reverseWithAuth<span class="signature">(name, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Get protected URL for a route</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Route name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Additional params for route</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line202">line 202</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="returns">Returns</h5>
+
+        
+<div class="param-desc">
+    <p>URL for route</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".route"><span class="type-signature">(static) </span>route<span class="signature">(route, name, callback)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Register a route and update Backbone history</p>
+<p>Overrides Backbone.Router.prototype.route</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>route</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>URL pattern</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Name of route</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Callback function for Backbone.Router.prototype.route</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line547">line 547</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".setPrevious"><span class="type-signature">(static) </span>setPrevious<span class="signature">(name, ignore<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Update previous route stack</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Route name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ignore</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Ignore this route</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line489">line 489</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id=".storedRedirect"><span class="type-signature">(static) </span>storedRedirect<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Empty method to be overriden if stored redirect functionality is desired</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line496">line 496</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id="~jQuery%25removeRootCookie"><span class="type-signature">(inner) </span>jQuery%removeRootCookie<span class="signature">(name, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Delete cookie at the root path</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Cookie name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Options to pass to jQuery.cookie</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line101">line 101</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+            
+
+    
+
+    <h4 class="name" id="~jQuery%25rootCookie"><span class="type-signature">(inner) </span>jQuery%rootCookie<span class="signature">(name, value, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Set cookie operation at the root path</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Cookie name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Cookie value</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Options to pass to jQuery.cookie</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line87">line 87</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="returns">Returns</h5>
+
+        
+<div class="param-desc">
+    <p>Cookie value</p>
+</div>
+
+
+
+    
+
+
+
+            
+        
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:window:on:click:a">window:on:click:a</h4>
+
+    
+
+
+
+<div class="description">
+    <p>Handle all triggerings of link elements</p>
+<p>Allow normal link behaviour if</p>
+<ul>
+<li>Link has a target (and not siteinfo)</li>
+<li>Link is an email (mailto:)</li>
+<li>Link has a class of &quot;external&quot;<ul>
+<li>if there is an external method, use that</li>
+<li>otherwise, allow link to load</li>
+</ul>
+</li>
+<li>Link is a fragment identifier (#)</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_bauplan.router.base.js.html">js/bauplan.router.base.js</a>, <a href="js_bauplan.router.base.js.html#line274">line 274</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3 class="configs">Configs</h3><ul><li><a href="config-bauplan%2525config%25250%25251%25250.html">bauplan.config.0.1.0</a></li><li><a href="config-core%2525config%25250%25251%25250.html">core.config.0.1.0</a></li></ul><h3 class="modules">Modules</h3><ul><li><a href="module-app%2525setup.html">app.setup</a></li><li><a href="module-bauplan.html">bauplan</a></li><li><a href="module-bauplan%2525ajax.html">bauplan.ajax</a></li><li><a href="module-bauplan%2525analytics.html">bauplan.analytics</a></li><li><a href="module-bauplan%2525app.html">bauplan.app</a></li><li><a href="module-bauplan%2525authentication.html">bauplan.authentication</a></li><li><a href="module-bauplan%2525authentication%2525controller.html">bauplan.authentication.controller</a></li><li><a href="module-bauplan%2525collection.html">bauplan.collection</a></li><li><a href="module-bauplan%2525control%2525view.html">bauplan.control.view<small> module</small></a></li><li><a href="module-bauplan%2525controller.html">bauplan.controller</a></li><li><a href="module-bauplan%2525controls.html">bauplan.controls</a></li><li><a href="module-bauplan%2525error%2525view.html">bauplan.error.view<small> module</small></a></li><li><a href="module-bauplan%2525feature.html">bauplan.feature</a></li><li><a href="module-bauplan%2525helpers.html">bauplan.helpers</a></li><li><a href="module-bauplan%2525i18n.html">bauplan.i18n</a></li><li><a href="module-bauplan%2525init.html">bauplan.init</a></li><li><a href="module-bauplan%2525layout%2525controller.html">bauplan.layout.controller</a></li><li><a href="module-bauplan%2525load.html">bauplan.load</a></li><li><a href="module-bauplan%2525model.html">bauplan.model</a></li><li><a href="module-bauplan%2525require.html">bauplan.require</a></li><li><a href="module-bauplan%2525router%2525base.html">bauplan.router.base</a></li><li><a href="module-bauplan%2525templates.html">bauplan.templates</a></li><li><a href="module-bauplan%2525thorax%2525patch.html">bauplan.thorax.patch</a></li><li><a href="module-bauplan%2525tracker.html">bauplan.tracker</a></li><li><a href="module-bauplan%2525view.html">bauplan.view<small> module</small></a></li><li><a href="module-default%2525control.html">default.control</a></li></ul><h3 class="events">Events</h3><ul><li><a href="module-bauplan%2525authentication.html#~event:change:loggedIn">bauplan.authentication~change:loggedIn</a></li><li><a href="module-bauplan%2525authentication.html#~event:change:registered">bauplan.authentication~change:registered</a></li><li><a href="module-bauplan%2525router%2525base.html#~event:window:on:click:a">bauplan.router.base~window:on:click:a</a></li><li><a href="module-bauplan%2525view.html#~event:click:cancelSelector">bauplan.view~click:cancelSelector</a></li><li><a href="module-bauplan%2525view.html#~event:click:saveSelector">bauplan.view~click:saveSelector</a></li><li><a href="module-bauplan%2525view.html#~event:on:rendered">bauplan.view~on:rendered</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:click">bauplan.view~window:on:click</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseenter">bauplan.view~window:on:mouseenter</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseleave">bauplan.view~window:on:mouseleave</a></li></ul><div class="controls"><h2>Controls</h2><h3 class="primitives">Primitives</h3><ul><li><a href="control-boolean.html">boolean</a></li><li><a href="control-integer.html">integer</a></li><li><a href="control-number.html">number</a></li></ul><h3 class="formats">Formats</h3><ul><li><a href="control-email.html">email</a></li><li><a href="control-payment-card.html">payment-card</a></li></ul><h3 class="control-types">Control types</h3><ul><li><a href="control-checkbox.html">checkbox</a></li><li><a href="control-date.html">date</a></li><li><a href="control-password-new.html">password-new</a></li><li><a href="control-payment-date-expiry.html">payment-date-expiry</a></li><li><a href="control-payment-date-start.html">payment-date-start</a></li><li><a href="control-select.html">select</a></li></ul></div><h3 class="template-helpers">Template helpers</h3><ul><li><a href="template-all.html">all</a></li><li><a href="template-asset.html">asset</a></li><li><a href="template-authrouteurl.html">authrouteurl</a></li><li><a href="template-compile.html">compile</a></li><li><a href="template-console.html">console</a></li><li><a href="template-currentTime.html">currentTime</a></li><li><a href="template-if.html">if</a></li><li><a href="template-layout.html">layout</a></li><li><a href="template-link.html">link</a></li><li><a href="template-or.html">or</a></li><li><a href="template-price.html">price</a></li><li><a href="template-routeurl.html">routeurl</a></li><li><a href="template-set.html">set</a></li></ul><h3 class="view-templates">View templates</h3><ul><li><a href="template-control%2525view.html">control.view<small> template</small></a></li><li><a href="template-default%2525abstract%2525view.html">default.abstract.view<small> template</small></a></li><li><a href="template-error%2525view.html">error.view<small> template</small></a></li></ul><h3 class="templates">Templates</h3><ul><li><a href="template-actions.html">actions</a></li><li><a href="template-control.html">control</a></li><li><a href="template-control%2525display.html">control.display</a></li><li><a href="template-control%2525edit.html">control.edit</a></li><li><a href="template-editblock.html">editblock</a></li><li><a href="template-password%2525block.html">password.block</a></li><li><a href="template-selectblock.html">selectblock</a></li></ul><h3 class="control-templates">Control templates</h3><ul><li><a href="template-checkbox%2525edit.html">checkbox.edit</a></li><li><a href="template-date%2525edit.html">date.edit</a></li><li><a href="template-file%2525edit.html">file.edit</a></li><li><a href="template-hidden%2525edit.html">hidden.edit</a></li><li><a href="template-password%2525edit.html">password.edit</a></li><li><a href="template-password-new%2525edit.html">password-new.edit</a></li><li><a href="template-payment-date-expiry%2525edit.html">payment-date-expiry.edit</a></li><li><a href="template-payment-date-start%2525edit.html">payment-date-start.edit</a></li><li><a href="template-select%2525edit.html">select.edit</a></li><li><a href="template-text%2525display.html">text.display</a></li><li><a href="template-text%2525edit.html">text.edit</a></li><li><a href="template-textarea%2525edit.html">textarea.edit</a></li></ul><h3 class="stylesheets">Stylesheets</h3><ul><li><a href="module-mixins%2525bauplan%2525less.html">mixins.bauplan.less</a></li><li><a href="module-mixins%2525less.html">mixins.less</a></li><li><a href="module-sizing%2525bauplan%2525less.html">sizing.bauplan.less</a></li><li><a href="module-sizing%2525less.html">sizing.less</a></li></ul><h3 class="lang-files">Lang files</h3><ul><li><a href="resourcebundle-en%2525properties.html">en</a></li><li><a href="resourcebundle-fr%2525properties.html">fr</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

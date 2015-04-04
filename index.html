@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/jquery-1.11.2.min.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h2>Bauplan</h2><p>Bauplan is a front-end framework providing models, collection, views, template helpers and loading, internationalisation (i18n), localisation, CSS functions and automatic input validation</p>
+<p>It is built on top of</p>
+<ul>
+<li><a href="http://requirejs.org">RequireJS</a></li>
+<li><a href="http://thoraxjs.org">Thorax</a></li>
+<li><a href="http://backbonejs.org">Backbone</a></li>
+<li><a href="http://jquery.com">jQuery</a></li>
+<li><a href="http://handlebarsjs.com">Handlebars</a></li>
+<li><a href="http://larynx.solidgoldpig.com">Larynx</a></li>
+<li><a href="http://lesscss.org">Less</a></li>
+</ul>
+<h3>Version</h3><p>0.1.0</p>
+<h3>Getting it</h3><pre class="prettyprint source"><code>npm install bauplan</code></pre><p>or</p>
+<pre class="prettyprint source"><code>git clone https://github.com/solidgoldpig/bauplan.git</code></pre><h3>Creating an app</h3><p>The minimum to get an app up and running would be to include the following within the html of the single page app sent by the server</p>
+<pre class="prettyprint source"><code>// AMD loader
+&lt;script src=&quot;/lib/require/require-2.1.10.js&quot;>&lt;/script>
+&lt;script>
+    // minimum config
+    var BauplanConfig = {
+        config: &quot;path-to-app-config&quot;
+    };
+&lt;/script>
+&lt;script>
+    // initialises app
+    require([&quot;/js/bauplan.init.js&quot;]);
+&lt;/script></code></pre><h3>Initialising the app</h3><p>Loading bauplan.init.js initialises the app.</p>
+<p>It achieves this by loading the config file[s] specified. processing them and then loading the resulting list of modules, templates and resource bundles </p>
+<p>See <a href="module-bauplan%2525init.html">bauplan.init</a> for full details</p>
+<h3>Data provided by the app page</h3><h4>BauplanConfig</h4><p>Provides additonal config values for the app</p>
+<pre class="prettyprint source"><code>var BauplanConfig = {
+    baseUrl: &quot;/&quot;,
+        // where config and modules should be loaded relative to
+    config: &quot;example/example.config.1.0.0&quot;,
+        // path to config (NB. without .js extension)
+    clientdefaults: {},
+        // any client defaults for modules to use
+    features: { x: true, y: false }, // hash of boolean values 
+    callback: function() {}
+        // a function to call once the app has been rendered
+};</code></pre><h4>BauplanData</h4><p>An optional object whose values are passed to <a href="module-bauplan%2525authentication.html">bauplan.authentication</a></p>
+<p>eg.</p>
+<pre class="prettyprint source"><code>var BauplanData = {
+    loggedIn: true,
+    registered: true
+};</code></pre><h3>Anatomy of a config file</h3><p>Essentially an app config file is an extension of RequireJs config values with the same properties.</p>
+<h4>deps</h4><p>Any further config files that the current configuration depends on, so an app's config (or its dependencies) should include the following:</p>
+<pre class="prettyprint source"><code>&quot;deps&quot;: &quot;bauplan.config.0.1.0&quot;</code></pre><p>In turn <a href="config-bauplan%2525config%25250%25251%25250.html">bauplan.config.0.1.0</a> depends on <a href="config-core%2525config%25250%25251%25250.html">core.config.0.1.0</a></p>
+<h4>paths</h4><p>Files to be loaded as per standard RequireJS modules (ie. AMD-style)</p>
+<p>NB. the extension .js will be added to the path.</p>
+<p>eg.</p>
+<pre class="prettyprint source"><code>&quot;todo.model&quot;: &quot;js/model/todo.model&quot;,
+&quot;todos.collection&quot;: &quot;js/collection/todos.collection&quot;,
+&quot;todo.controller&quot;: &quot;js/controller/todo.controller&quot;,
+&quot;todo.view&quot;: &quot;js/view/todo.view&quot;</code></pre><h5>Path key naming convention</h5><ul>
+<li>models - {{name}}.model</li>
+<li>collections - {{name}}.collection</li>
+<li>controllers - {{name}}.controller</li>
+<li>views - {{name}}.view</li>
+</ul>
+<h4>templates</h4><p>Files to be loaded and processed for use as Handlebars templates</p>
+<p>NB. the extension .hbs will be added to the path.</p>
+<p>eg.</p>
+<pre class="prettyprint source"><code>&quot;main.layout&quot;: &quot;template/layout/main.layout&quot;,
+&quot;control.view&quot;: &quot;template/view/control.view&quot;,
+&quot;actions&quot;: &quot;template/control/actions.template&quot;,
+&quot;checkbox.edit&quot;: &quot;template/control/checkbox.edit.control&quot;</code></pre><h5>Template key naming convention</h5><ul>
+<li>layout views - {{name}}.layout</li>
+<li>views - {{name}}.view</li>
+<li>templates - {{name}}</li>
+<li>controls - {{name}}.[edit|display]</li>
+</ul>
+<h4>langs</h4><p>Files to be loaded and parsed for use in i18n</p>
+<pre class="prettyprint source"><code>&quot;key&quot;: &quot;path&quot;</code></pre><p>These files should be formatted as resource bundle style properties files.</p>
+<p>NB. the extension .properties will be added to the path.</p>
+<p>eg.</p>
+<pre class="prettyprint source"><code>&quot;en.company&quot;: &quot;app/lang/en.company&quot;</code></pre><h5>Lang key naming convention</h5><ul>
+<li>{{lang}}.{{type}}</li>
+</ul>
+<h4>defaultlang</h4><p>The default language/locale to use for the app.</p>
+<p>Defaults to &quot;en&quot;</p>
+<h4>Additional properties</h4><p>Are standard RequireJS config properties and behave accordingly</p>
+<p>eg.</p>
+<ul>
+<li>waitSeconds</li>
+<li>shim</li>
+</ul>
+<h4>Cross-domain requests</h4><p>In the case of non-javascript resources (eg. templates and lang files), if the path requested is from another domain, it will be suffixed with .js too. It is expected that the server will wrap the response in a define function that returns the language string.</p>
+<p>In other words, it is possible to serve any of the files of a CDN</p>
+<h4>Path key overriding and resolution</h4><ul>
+<li>Where a later loaded config file has the same key as an earlier one, the first loaded value wins</li>
+<li>This makes it possible (indeed encouraged) to override a more core module/template by simply redefining its path in the higher, more specific config file. The original module can still be required using a new key.</li>
+</ul>
+<h3>Modules</h3><h4>Models</h4><p>Models are provided by extending <a href="module-bauplan%2525model.html">bauplan.model</a></p>
+<h4>Collections</h4><p>Collections are provided by extending <a href="module-bauplan%2525collection.html">bauplan.collection</a></p>
+<h4>Controllers</h4><p>Controllers are provided by extending <a href="module-bauplan%2525controller.html">bauplan.controller</a></p>
+<h4>Views</h4><p>Views are provided by extending <a href="module-bauplan%2525view.html">bauplan.view<small> module</small></a></p>
+<h4>Layout views</h4><p>Layout views are provided by extending Bauplan.LayoutView in <a href="module-bauplan%2525thorax%2525patch.html">bauplan.thorax.patch</a>.</p>
+<p>This is handled automagically and should be handled by using the declarative layout template helper</p>
+<h4>Controls</h4><p>Individual controls defined in the config are loaded by <a href="module-bauplan%2525controls.html">bauplan.controls</a> and handled by <a href="module-bauplan%2525control%2525view.html">bauplan.control.view<small> module</small></a>.</p>
+<p>The default controls are defined in <a href="module-default%2525control.html">default.control</a>.</p>
+<h3>Templates</h3><p>Template files defined in the config are loaded and compiled by <a href="module-bauplan%2525templates.html">bauplan.templates</a></p>
+<p>View templates are associated automatically with the view of the same name, unless that view's template option is set</p>
+<h3>Template helpers</h3><p>Insert the view named &quot;foo&quot; - instantiates the foo.view module and uses the foo.view template</p>
+<pre class="prettyprint source"><code>{{view &quot;foo&quot;}}</code></pre><p>Insert a layout view, with the initial view set to the value of foo</p>
+<pre class="prettyprint source"><code>{{layout view=foo}}</code></pre><p>Insert the template named &quot;foo&quot;</p>
+<pre class="prettyprint source"><code>{{template &quot;foo&quot;}}</code></pre><p>Insert the text control with the control’s name set to &quot;foo&quot;</p>
+<pre class="prettyprint source"><code>{{control &quot;text&quot; name=&quot;foo&quot;}}</code></pre><p>For more details on helpers, see <a href="module-bauplan%2525helpers.html">bauplan.helpers</a></p>
+<h3>Internationalisation</h3><p>Lang files defined in the config are loaded by <a href="module-bauplan%2525i18n.html">bauplan.i18n</a></p>
+<p>Internationalised phrases are inserted using the phrase helper (provided as part of Larynx)</p>
+<pre class="prettyprint source"><code>{{phrase &quot;foo&quot;}}</code></pre><h3>Minimum configuration</h3><p>Given that abstract views can be loaded </p>
+<ul>
+<li>create app configuration<ul>
+<li>modules<ul>
+<li>router</li>
+<li>app models</li>
+<li>app views</li>
+<li>app.setput (optional)</li>
+</ul>
+</li>
+<li>templates<ul>
+<li>views</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3 class="configs">Configs</h3><ul><li><a href="config-bauplan%2525config%25250%25251%25250.html">bauplan.config.0.1.0</a></li><li><a href="config-core%2525config%25250%25251%25250.html">core.config.0.1.0</a></li></ul><h3 class="modules">Modules</h3><ul><li><a href="module-app%2525setup.html">app.setup</a></li><li><a href="module-bauplan.html">bauplan</a></li><li><a href="module-bauplan%2525ajax.html">bauplan.ajax</a></li><li><a href="module-bauplan%2525analytics.html">bauplan.analytics</a></li><li><a href="module-bauplan%2525app.html">bauplan.app</a></li><li><a href="module-bauplan%2525authentication.html">bauplan.authentication</a></li><li><a href="module-bauplan%2525authentication%2525controller.html">bauplan.authentication.controller</a></li><li><a href="module-bauplan%2525collection.html">bauplan.collection</a></li><li><a href="module-bauplan%2525control%2525view.html">bauplan.control.view<small> module</small></a></li><li><a href="module-bauplan%2525controller.html">bauplan.controller</a></li><li><a href="module-bauplan%2525controls.html">bauplan.controls</a></li><li><a href="module-bauplan%2525error%2525view.html">bauplan.error.view<small> module</small></a></li><li><a href="module-bauplan%2525feature.html">bauplan.feature</a></li><li><a href="module-bauplan%2525helpers.html">bauplan.helpers</a></li><li><a href="module-bauplan%2525i18n.html">bauplan.i18n</a></li><li><a href="module-bauplan%2525init.html">bauplan.init</a></li><li><a href="module-bauplan%2525layout%2525controller.html">bauplan.layout.controller</a></li><li><a href="module-bauplan%2525load.html">bauplan.load</a></li><li><a href="module-bauplan%2525model.html">bauplan.model</a></li><li><a href="module-bauplan%2525require.html">bauplan.require</a></li><li><a href="module-bauplan%2525router%2525base.html">bauplan.router.base</a></li><li><a href="module-bauplan%2525templates.html">bauplan.templates</a></li><li><a href="module-bauplan%2525thorax%2525patch.html">bauplan.thorax.patch</a></li><li><a href="module-bauplan%2525tracker.html">bauplan.tracker</a></li><li><a href="module-bauplan%2525view.html">bauplan.view<small> module</small></a></li><li><a href="module-default%2525control.html">default.control</a></li></ul><h3 class="events">Events</h3><ul><li><a href="module-bauplan%2525authentication.html#~event:change:loggedIn">bauplan.authentication~change:loggedIn</a></li><li><a href="module-bauplan%2525authentication.html#~event:change:registered">bauplan.authentication~change:registered</a></li><li><a href="module-bauplan%2525router%2525base.html#~event:window:on:click:a">bauplan.router.base~window:on:click:a</a></li><li><a href="module-bauplan%2525view.html#~event:click:cancelSelector">bauplan.view~click:cancelSelector</a></li><li><a href="module-bauplan%2525view.html#~event:click:saveSelector">bauplan.view~click:saveSelector</a></li><li><a href="module-bauplan%2525view.html#~event:on:rendered">bauplan.view~on:rendered</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:click">bauplan.view~window:on:click</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseenter">bauplan.view~window:on:mouseenter</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseleave">bauplan.view~window:on:mouseleave</a></li></ul><div class="controls"><h2>Controls</h2><h3 class="primitives">Primitives</h3><ul><li><a href="control-boolean.html">boolean</a></li><li><a href="control-integer.html">integer</a></li><li><a href="control-number.html">number</a></li></ul><h3 class="formats">Formats</h3><ul><li><a href="control-email.html">email</a></li><li><a href="control-payment-card.html">payment-card</a></li></ul><h3 class="control-types">Control types</h3><ul><li><a href="control-checkbox.html">checkbox</a></li><li><a href="control-date.html">date</a></li><li><a href="control-password-new.html">password-new</a></li><li><a href="control-payment-date-expiry.html">payment-date-expiry</a></li><li><a href="control-payment-date-start.html">payment-date-start</a></li><li><a href="control-select.html">select</a></li></ul></div><h3 class="template-helpers">Template helpers</h3><ul><li><a href="template-all.html">all</a></li><li><a href="template-asset.html">asset</a></li><li><a href="template-authrouteurl.html">authrouteurl</a></li><li><a href="template-compile.html">compile</a></li><li><a href="template-console.html">console</a></li><li><a href="template-currentTime.html">currentTime</a></li><li><a href="template-if.html">if</a></li><li><a href="template-layout.html">layout</a></li><li><a href="template-link.html">link</a></li><li><a href="template-or.html">or</a></li><li><a href="template-price.html">price</a></li><li><a href="template-routeurl.html">routeurl</a></li><li><a href="template-set.html">set</a></li></ul><h3 class="view-templates">View templates</h3><ul><li><a href="template-control%2525view.html">control.view<small> template</small></a></li><li><a href="template-default%2525abstract%2525view.html">default.abstract.view<small> template</small></a></li><li><a href="template-error%2525view.html">error.view<small> template</small></a></li></ul><h3 class="templates">Templates</h3><ul><li><a href="template-actions.html">actions</a></li><li><a href="template-control.html">control</a></li><li><a href="template-control%2525display.html">control.display</a></li><li><a href="template-control%2525edit.html">control.edit</a></li><li><a href="template-editblock.html">editblock</a></li><li><a href="template-password%2525block.html">password.block</a></li><li><a href="template-selectblock.html">selectblock</a></li></ul><h3 class="control-templates">Control templates</h3><ul><li><a href="template-checkbox%2525edit.html">checkbox.edit</a></li><li><a href="template-date%2525edit.html">date.edit</a></li><li><a href="template-file%2525edit.html">file.edit</a></li><li><a href="template-hidden%2525edit.html">hidden.edit</a></li><li><a href="template-password%2525edit.html">password.edit</a></li><li><a href="template-password-new%2525edit.html">password-new.edit</a></li><li><a href="template-payment-date-expiry%2525edit.html">payment-date-expiry.edit</a></li><li><a href="template-payment-date-start%2525edit.html">payment-date-start.edit</a></li><li><a href="template-select%2525edit.html">select.edit</a></li><li><a href="template-text%2525display.html">text.display</a></li><li><a href="template-text%2525edit.html">text.edit</a></li><li><a href="template-textarea%2525edit.html">textarea.edit</a></li></ul><h3 class="stylesheets">Stylesheets</h3><ul><li><a href="module-mixins%2525bauplan%2525less.html">mixins.bauplan.less</a></li><li><a href="module-mixins%2525less.html">mixins.less</a></li><li><a href="module-sizing%2525bauplan%2525less.html">sizing.bauplan.less</a></li><li><a href="module-sizing%2525less.html">sizing.less</a></li></ul><h3 class="lang-files">Lang files</h3><ul><li><a href="resourcebundle-en%2525properties.html">en</a></li><li><a href="resourcebundle-fr%2525properties.html">fr</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -77,7 +77,7 @@ define(function(require) {
  *
  * @return {instance} Tracker
  */
-    var _ = require("underscore");
+    var _ = require("lodash");
     var jQuery = require("jquery");
     var Backbone = require("backbone");
     var Analytics = require("bauplan.analytics");

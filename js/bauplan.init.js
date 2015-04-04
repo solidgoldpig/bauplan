@@ -121,7 +121,7 @@ define([], function () {
 
             require.config(config);
             // Thorax needs _ and Handlebars to exist in the global scope
-            require(["underscore", "handlebars"], function(_, Handlebars) {
+            require(["lodash", "handlebars"], function(_, Handlebars) {
                 // Load bauplan and then let bauplan load
                 require(["bauplan"], function (Bauplan) {
                     Bauplan.namespace("Config");

@@ -1,5 +1,5 @@
 define([
-        "underscore",
+        "lodash",
         "thorax",
         "bauplan.authentication"
     ], function (_, Thorax, BauplanAuthentication) {

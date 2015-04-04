@@ -1,5 +1,5 @@
 define([
-        "underscore",
+        "lodash",
         "thorax",
         "bauplan"
     ], function (_, Thorax, Bauplan) {

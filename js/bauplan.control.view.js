@@ -1,5 +1,5 @@
 define([
-        "underscore",
+        "lodash",
         "thorax",
         "larynx",
         "bauplan.error.view"

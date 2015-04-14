@@ -1,7 +1,7 @@
 /**
  * @module bauplan%helpers
  * @description ## Helpers for Handlebars
- * Registers helpers provided by [Larynx](http://larynx.solidgolpig.com), setting locale and languages
+ * Registers helpers provided by [Larynx](http://larynx.solidgoldpig.com), setting locale and languages
  * Registers additional helpers
  *
  * ### Additional helpers

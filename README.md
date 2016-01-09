@@ -14,7 +14,7 @@ It is built on top of
 
 ### Version
 
-0.1.0
+0.1.1
 
 ### Getting it
 
@@ -29,7 +29,7 @@ or
 The minimum to get an app up and running would be to include the following within the html of the single page app sent by the server
 
     // AMD loader
-    <script src="/lib/require/require-2.1.10.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.22/require.min.js"></script>
     <script>
         // minimum config
         var BauplanConfig = {

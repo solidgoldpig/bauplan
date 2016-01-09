@@ -575,7 +575,7 @@ define(function(require) {
     var trackerInstance = new Tracker();
 
     // Attempt to catch unhandled errors and exceptions
-    (function(win){
+    /*(function(win){
         var callback = null, handler = win.onerror;
 
         win.tryCatch = function (tryFn, catchFn) {
@@ -598,7 +598,7 @@ define(function(require) {
             return handler ? handler.apply(win, arguments) : true;
         };
 
-    })(window);
+    })(window);*/
 
     // Register events to track automagickally
     jQuery(document).on("mouseover", "a, input[type=submit], button", function () {

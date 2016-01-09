@@ -324,7 +324,7 @@ define([
                 if (control.name !== "control") {
                     continue;
                 }
-                if (checkmethod) {
+                if (checkmethod && control.$el) {
                     var value = control.getValue();
                     control[checkmethod](value, options);
                 }
@@ -352,7 +352,7 @@ define([
             }
             this.disabled = disable;
             // would be better if this triggered a change to the actions view
-            this.$el.find(this.saveSelector).toggleClass("disabled", disable);
+            this.$el && this.$el.find(this.saveSelector).toggleClass("disabled", disable);
         },
         /**
          * @method disableForm
@@ -471,7 +471,7 @@ define([
             this.onHandle("error", model, response, options);
             // maybe this should be in onHandle
             this.hasbeensubmitted = false;
-            this.$el.find(this.saveSelector).removeClass("submitting");
+            this.$el && this.$el.find(this.saveSelector).removeClass("submitting");
             // make it like onSuccess
             /*if (this.errorRoute) {
                 Bauplan.Router.callRoute(this.errorRoute);
@@ -546,7 +546,7 @@ define([
                 this.validateAllControls({update:true});
                 if (this.hasNoErrors && !this.disabled) {
                     this.hasbeensubmitted = true;
-                    this.$el.find(this.saveSelector).addClass("submitting");
+                    this.$el && this.$el.find(this.saveSelector).addClass("submitting");
                     this.saveForm(this.saveOptions, e);
                 } else {
                     jQuery(e.target).blur();

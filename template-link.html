@@ -18,9 +18,9 @@
 <body>
 
 <div id="main">
-
+<div class="header">
     <h1 class="page-title"><small>Template helper</small> link</h1>
-
+</div>
     
 
 
@@ -62,7 +62,7 @@
 
     
         
-            <div class="description"><p>Generates links using urls or localisation keys, prefixing with domain if necessary.</p>
+            <div class="description container"><p>Generates links using urls or localisation keys, prefixing with domain if necessary.</p>
 <p>Accepts protocol-less URLs and email addresses</p>
 <p>Given:</p>
 <ul>
@@ -91,6 +91,16 @@
      -> '&lt;a href=&quot;mailto:/foo@domain&quot;>Bar&lt;/a>'</code></pre></div>
             
         
+
+        <!-- ?js= self.partial('details.tmpl', doc) ?-->
+
+        
+    
+    </div>
+
+    
+
+    
 
         
 
@@ -140,14 +150,6 @@
 </dl>
 
 
-        
-    
-    </div>
-
-    
-
-    
-
     
 
      
@@ -168,6 +170,7 @@
             <h5>Parameters:</h5>
             
 
+<div class="paramswrapper">
 <table class="params">
     <thead>
     <tr>
@@ -288,6 +291,7 @@
     
     </tbody>
 </table>
+</div>
 
         
     
@@ -301,14 +305,15 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3 class="configs">Configs</h3><ul><li><a href="config-bauplan%2525config%25250%25251%25250.html">bauplan.config.0.1.0</a></li><li><a href="config-core%2525config%25250%25251%25250.html">core.config.0.1.0</a></li></ul><h3 class="modules">Modules</h3><ul><li><a href="module-app%2525setup.html">app.setup</a></li><li><a href="module-bauplan.html">bauplan</a></li><li><a href="module-bauplan%2525ajax.html">bauplan.ajax</a></li><li><a href="module-bauplan%2525analytics.html">bauplan.analytics</a></li><li><a href="module-bauplan%2525app.html">bauplan.app</a></li><li><a href="module-bauplan%2525authentication.html">bauplan.authentication</a></li><li><a href="module-bauplan%2525authentication%2525controller.html">bauplan.authentication.controller</a></li><li><a href="module-bauplan%2525collection.html">bauplan.collection</a></li><li><a href="module-bauplan%2525control%2525view.html">bauplan.control.view<small> module</small></a></li><li><a href="module-bauplan%2525controller.html">bauplan.controller</a></li><li><a href="module-bauplan%2525controls.html">bauplan.controls</a></li><li><a href="module-bauplan%2525error%2525view.html">bauplan.error.view<small> module</small></a></li><li><a href="module-bauplan%2525feature.html">bauplan.feature</a></li><li><a href="module-bauplan%2525helpers.html">bauplan.helpers</a></li><li><a href="module-bauplan%2525i18n.html">bauplan.i18n</a></li><li><a href="module-bauplan%2525init.html">bauplan.init</a></li><li><a href="module-bauplan%2525layout%2525controller.html">bauplan.layout.controller</a></li><li><a href="module-bauplan%2525load.html">bauplan.load</a></li><li><a href="module-bauplan%2525model.html">bauplan.model</a></li><li><a href="module-bauplan%2525require.html">bauplan.require</a></li><li><a href="module-bauplan%2525router%2525base.html">bauplan.router.base</a></li><li><a href="module-bauplan%2525templates.html">bauplan.templates</a></li><li><a href="module-bauplan%2525thorax%2525patch.html">bauplan.thorax.patch</a></li><li><a href="module-bauplan%2525tracker.html">bauplan.tracker</a></li><li><a href="module-bauplan%2525view.html">bauplan.view<small> module</small></a></li><li><a href="module-default%2525control.html">default.control</a></li></ul><h3 class="events">Events</h3><ul><li><a href="module-bauplan%2525authentication.html#~event:change:loggedIn">bauplan.authentication~change:loggedIn</a></li><li><a href="module-bauplan%2525authentication.html#~event:change:registered">bauplan.authentication~change:registered</a></li><li><a href="module-bauplan%2525router%2525base.html#~event:window:on:click:a">bauplan.router.base~window:on:click:a</a></li><li><a href="module-bauplan%2525view.html#~event:click:cancelSelector">bauplan.view~click:cancelSelector</a></li><li><a href="module-bauplan%2525view.html#~event:click:saveSelector">bauplan.view~click:saveSelector</a></li><li><a href="module-bauplan%2525view.html#~event:on:rendered">bauplan.view~on:rendered</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:click">bauplan.view~window:on:click</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseenter">bauplan.view~window:on:mouseenter</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseleave">bauplan.view~window:on:mouseleave</a></li></ul><div class="controls"><h2>Controls</h2><h3 class="primitives">Primitives</h3><ul><li><a href="control-boolean.html">boolean</a></li><li><a href="control-integer.html">integer</a></li><li><a href="control-number.html">number</a></li></ul><h3 class="formats">Formats</h3><ul><li><a href="control-email.html">email</a></li><li><a href="control-payment-card.html">payment-card</a></li></ul><h3 class="control-types">Control types</h3><ul><li><a href="control-checkbox.html">checkbox</a></li><li><a href="control-date.html">date</a></li><li><a href="control-password-new.html">password-new</a></li><li><a href="control-payment-date-expiry.html">payment-date-expiry</a></li><li><a href="control-payment-date-start.html">payment-date-start</a></li><li><a href="control-select.html">select</a></li></ul></div><h3 class="template-helpers">Template helpers</h3><ul><li><a href="template-all.html">all</a></li><li><a href="template-asset.html">asset</a></li><li><a href="template-authrouteurl.html">authrouteurl</a></li><li><a href="template-compile.html">compile</a></li><li><a href="template-console.html">console</a></li><li><a href="template-currentTime.html">currentTime</a></li><li><a href="template-if.html">if</a></li><li><a href="template-layout.html">layout</a></li><li><a href="template-link.html">link</a></li><li><a href="template-or.html">or</a></li><li><a href="template-price.html">price</a></li><li><a href="template-routeurl.html">routeurl</a></li><li><a href="template-set.html">set</a></li></ul><h3 class="view-templates">View templates</h3><ul><li><a href="template-control%2525view.html">control.view<small> template</small></a></li><li><a href="template-default%2525abstract%2525view.html">default.abstract.view<small> template</small></a></li><li><a href="template-error%2525view.html">error.view<small> template</small></a></li></ul><h3 class="templates">Templates</h3><ul><li><a href="template-actions.html">actions</a></li><li><a href="template-control.html">control</a></li><li><a href="template-control%2525display.html">control.display</a></li><li><a href="template-control%2525edit.html">control.edit</a></li><li><a href="template-editblock.html">editblock</a></li><li><a href="template-password%2525block.html">password.block</a></li><li><a href="template-selectblock.html">selectblock</a></li></ul><h3 class="control-templates">Control templates</h3><ul><li><a href="template-checkbox%2525edit.html">checkbox.edit</a></li><li><a href="template-date%2525edit.html">date.edit</a></li><li><a href="template-file%2525edit.html">file.edit</a></li><li><a href="template-hidden%2525edit.html">hidden.edit</a></li><li><a href="template-password%2525edit.html">password.edit</a></li><li><a href="template-password-new%2525edit.html">password-new.edit</a></li><li><a href="template-payment-date-expiry%2525edit.html">payment-date-expiry.edit</a></li><li><a href="template-payment-date-start%2525edit.html">payment-date-start.edit</a></li><li><a href="template-select%2525edit.html">select.edit</a></li><li><a href="template-text%2525display.html">text.display</a></li><li><a href="template-text%2525edit.html">text.edit</a></li><li><a href="template-textarea%2525edit.html">textarea.edit</a></li></ul><h3 class="stylesheets">Stylesheets</h3><ul><li><a href="module-mixins%2525bauplan%2525less.html">mixins.bauplan.less</a></li><li><a href="module-mixins%2525less.html">mixins.less</a></li><li><a href="module-sizing%2525bauplan%2525less.html">sizing.bauplan.less</a></li><li><a href="module-sizing%2525less.html">sizing.less</a></li></ul><h3 class="lang-files">Lang files</h3><ul><li><a href="resourcebundle-en%2525properties.html">en</a></li><li><a href="resourcebundle-fr%2525properties.html">fr</a></li></ul>
+<div class="navwrapout">
+    <div class="navwrap"><h2><a href="index.html">bauplan</a></h2><div class="navsection"><h3 class="configs">Configs</h3><ul><li><a href="config-bauplan%2525config%25250%25251%25250.html">bauplan.config.0.1.0</a></li><li><a href="config-core%2525config%25250%25251%25250.html">core.config.0.1.0</a></li></ul></div><div class="navsection"><h3 class="modules">Modules</h3><ul><li><a href="module-app%2525setup.html">app.setup</a></li><li><a href="module-bauplan.html">bauplan</a></li><li><a href="module-bauplan%2525ajax.html">bauplan.ajax</a></li><li><a href="module-bauplan%2525analytics.html">bauplan.analytics</a></li><li><a href="module-bauplan%2525app.html">bauplan.app</a></li><li><a href="module-bauplan%2525authentication.html">bauplan.authentication</a></li><li><a href="module-bauplan%2525authentication%2525controller.html">bauplan.authentication.controller</a></li><li><a href="module-bauplan%2525collection.html">bauplan.collection</a></li><li><a href="module-bauplan%2525control%2525view.html">bauplan.control.view<small> module</small></a></li><li><a href="module-bauplan%2525controller.html">bauplan.controller</a></li><li><a href="module-bauplan%2525controls.html">bauplan.controls</a></li><li><a href="module-bauplan%2525error%2525view.html">bauplan.error.view<small> module</small></a></li><li><a href="module-bauplan%2525feature.html">bauplan.feature</a></li><li><a href="module-bauplan%2525helpers.html">bauplan.helpers</a></li><li><a href="module-bauplan%2525i18n.html">bauplan.i18n</a></li><li><a href="module-bauplan%2525init.html">bauplan.init</a></li><li><a href="module-bauplan%2525layout%2525controller.html">bauplan.layout.controller</a></li><li><a href="module-bauplan%2525load.html">bauplan.load</a></li><li><a href="module-bauplan%2525model.html">bauplan.model</a></li><li><a href="module-bauplan%2525require.html">bauplan.require</a></li><li><a href="module-bauplan%2525router%2525base.html">bauplan.router.base</a></li><li><a href="module-bauplan%2525templates.html">bauplan.templates</a></li><li><a href="module-bauplan%2525thorax%2525patch.html">bauplan.thorax.patch</a></li><li><a href="module-bauplan%2525tracker.html">bauplan.tracker</a></li><li><a href="module-bauplan%2525view.html">bauplan.view<small> module</small></a></li><li><a href="module-default%2525control.html">default.control</a></li></ul></div><div class="navsection"><h3 class="events">Events</h3><ul><li><a href="module-bauplan%2525authentication.html#~event:change:loggedIn">bauplan.authentication~change:loggedIn</a></li><li><a href="module-bauplan%2525authentication.html#~event:change:registered">bauplan.authentication~change:registered</a></li><li><a href="module-bauplan%2525router%2525base.html#~event:window:on:click:a">bauplan.router.base~window:on:click:a</a></li><li><a href="module-bauplan%2525view.html#~event:click:cancelSelector">bauplan.view~click:cancelSelector</a></li><li><a href="module-bauplan%2525view.html#~event:click:saveSelector">bauplan.view~click:saveSelector</a></li><li><a href="module-bauplan%2525view.html#~event:on:rendered">bauplan.view~on:rendered</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:click">bauplan.view~window:on:click</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseenter">bauplan.view~window:on:mouseenter</a></li><li><a href="module-bauplan%2525view.html#~event:window:on:mouseleave">bauplan.view~window:on:mouseleave</a></li></ul></div><div class="controls navsection"><h3>Controls</h3><div class="navsectioninner"><div class=""><h4 class="primitives">Primitives</h4><ul><li><a href="control-boolean.html">boolean</a></li><li><a href="control-integer.html">integer</a></li><li><a href="control-number.html">number</a></li></ul></div><div class=""><h4 class="formats">Formats</h4><ul><li><a href="control-email.html">email</a></li><li><a href="control-payment-card.html">payment-card</a></li></ul></div><div class=""><h4 class="control-types">Control types</h4><ul><li><a href="control-checkbox.html">checkbox</a></li><li><a href="control-date.html">date</a></li><li><a href="control-password-new.html">password-new</a></li><li><a href="control-payment-date-expiry.html">payment-date-expiry</a></li><li><a href="control-payment-date-start.html">payment-date-start</a></li><li><a href="control-select.html">select</a></li></ul></div></div></div><div class="navsection"><h3 class="template-helpers">Template helpers</h3><ul><li><a href="template-all.html">all</a></li><li><a href="template-asset.html">asset</a></li><li><a href="template-authrouteurl.html">authrouteurl</a></li><li><a href="template-compile.html">compile</a></li><li><a href="template-console.html">console</a></li><li><a href="template-currentTime.html">currentTime</a></li><li><a href="template-if.html">if</a></li><li><a href="template-layout.html">layout</a></li><li><a href="template-link.html">link</a></li><li><a href="template-or.html">or</a></li><li><a href="template-price.html">price</a></li><li><a href="template-routeurl.html">routeurl</a></li><li><a href="template-set.html">set</a></li></ul></div><div class="navsection"><h3 class="view-templates">View templates</h3><ul><li><a href="template-control%2525view.html">control.view<small> template</small></a></li><li><a href="template-default%2525abstract%2525view.html">default.abstract.view<small> template</small></a></li><li><a href="template-error%2525view.html">error.view<small> template</small></a></li></ul></div><div class="navsection"><h3 class="templates">Templates</h3><ul><li><a href="template-actions.html">actions</a></li><li><a href="template-control.html">control</a></li><li><a href="template-control%2525display.html">control.display</a></li><li><a href="template-control%2525edit.html">control.edit</a></li><li><a href="template-editblock.html">editblock</a></li><li><a href="template-password%2525block.html">password.block</a></li><li><a href="template-selectblock.html">selectblock</a></li></ul></div><div class="navsection"><h3 class="control-templates">Control templates</h3><ul><li><a href="template-checkbox%2525edit.html">checkbox.edit</a></li><li><a href="template-date%2525edit.html">date.edit</a></li><li><a href="template-file%2525edit.html">file.edit</a></li><li><a href="template-hidden%2525edit.html">hidden.edit</a></li><li><a href="template-password%2525edit.html">password.edit</a></li><li><a href="template-password-new%2525edit.html">password-new.edit</a></li><li><a href="template-payment-date-expiry%2525edit.html">payment-date-expiry.edit</a></li><li><a href="template-payment-date-start%2525edit.html">payment-date-start.edit</a></li><li><a href="template-select%2525edit.html">select.edit</a></li><li><a href="template-text%2525display.html">text.display</a></li><li><a href="template-text%2525edit.html">text.edit</a></li><li><a href="template-textarea%2525edit.html">textarea.edit</a></li></ul></div><div class="navsection"><h3 class="stylesheets">Stylesheets</h3><ul><li><a href="module-mixins%2525bauplan%2525less.html">mixins.bauplan.less</a></li><li><a href="module-mixins%2525less.html">mixins.less</a></li><li><a href="module-sizing%2525bauplan%2525less.html">sizing.bauplan.less</a></li><li><a href="module-sizing%2525less.html">sizing.less</a></li></ul></div><div class="navsection"><h3 class="lang-files">Lang files</h3><ul><li><a href="resourcebundle-en%2525properties.html">en</a></li><li><a href="resourcebundle-fr%2525properties.html">fr</a></li></ul></div><div class="exampleapp"><h2>Example app</h2><div class="navsection"><h3 class="configs">Configs</h3><ul><li><a href="config-example%2525config%25251%25250%25250.html">example.config.1.0.0</a></li></ul></div><div class="navsection"><h3 class="modules">Modules</h3><ul><li><a href="module-Example%2525%2525app%2525setup.html">app.setup</a></li></ul></div><div class="navsection"><h3 class="layout-view-templates">Layout view templates</h3><ul><li><a href="template-main%2525layout.html">main.layout</a></li></ul></div><div class="navsection"><h3 class="view-templates">View templates</h3><ul><li><a href="template-view_content%2525view%2525hbs.html">view/content.view.hbs</a></li><li><a href="template-view_header%2525view%2525hbs.html">view/header.view.hbs</a></li><li><a href="template-view_site-content%2525view%2525hbs.html">view/site-content.view.hbs</a></li></ul></div><div class="navsection"><h3 class="stylesheets">Stylesheets</h3><ul><li><a href="module-global%2525less.html">global.less</a></li></ul></div></div></div>
+    <div class="external-links">
+      <p class="github"><a href="https://github.com/solidgoldpig/bauplan" title="View bauplan on Github"><span>View on </span> Github</a></p>
+      <p class="codesite"><a href="http://code.solidgoldpig.com" title="View other Solidgoldpig projects">Solidgoldpig code</a></p>
+    </div>
+</div>
 </nav>
 
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a>
-</footer>
 
 <script> prettyPrint(); </script>
 <script src="scripts/linenumber.js"> </script>
